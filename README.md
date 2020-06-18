@@ -30,7 +30,7 @@ test account:
 | Type | Path             | Notes               |
 | ---- | ---------------- | ------------------- |
 | POST | `/auth/register` | register a new user |
-| POST | `/auth/login`     | login an user       |
+| POST | `auth/login`     | login an user       |
 
 ## Examples
 
