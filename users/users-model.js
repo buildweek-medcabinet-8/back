@@ -16,9 +16,9 @@ function getUserById(id) {
   return db("users").select("id", "username").where({ id });
 }
 function addUser(user) {
-  db("users").insert(user);
+  console.log(`now we're inserting ${user.username}`);
 
-  return db("users").select("id", "username").where({ id: 1 }).first();
+  return db("users").insert(user);
 }
 
 function findBy(filter) {

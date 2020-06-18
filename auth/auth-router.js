@@ -3,13 +3,29 @@ const jwt = require("jsonwebtoken");
 const Users = require("../users/users-model");
 const cryptZ = require("bcryptjs");
 
-const secrets = require("../secrets/secrets");
+const secrets = require("../secrets/secret");
+
+router.route("/users").get((req, res) => {
+  let user = req.body;
+  const hash = cryptZ.hashSync(user.password, 12);
+  user.password = hash;
+
+  Users.getUsers()
+    .then((allUsers) => {
+      res.status(201).json({ message: "all users", users: allUsers });
+    })
+    .catch((err) => {
+      res
+        .status(500)
+        .json({ message: "not sure what happened boss", err: err.message });
+    });
+});
 
 router.route("/register").post((req, res) => {
   let user = req.body;
   const hash = cryptZ.hashSync(user.password, 12);
   user.password = hash;
-
+  console.log(`user is ${user.username}`);
   Users.addUser(user)
     .then((userRegRes) => {
       res
