@@ -10,11 +10,10 @@
 | email    | string  | _required_ and _unique_            |
 | password | string  | _required_                         |
 | username | string  | _required_                         |
-| role     | string  | _required_                         |
 
 ## API
 
-BASE URL: https://bw-use-my-tech-stuff.herokuapp.com/
+BASE URL: https://bw-medcab-8.herokuapp.com
 test account:
 
 ```json
