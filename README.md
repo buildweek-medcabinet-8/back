@@ -88,7 +88,7 @@ request data:
 
 ```json
 {
-  "headers": { "authorization": "really.long.token" }
+  "headers": { "authorization": "bearer really.long.token" }
 }
 ```
 
