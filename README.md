@@ -82,7 +82,7 @@ response data:
 }
 ```
 
-#### GET auth/profile
+#### GET /profile
 
 request data:
 
