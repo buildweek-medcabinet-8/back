@@ -3,9 +3,11 @@ const secrets = require("../secrets/secret");
 module.exports = (req, res, next) => {
   const [directive, token] = req.headers.authorization.split(" ");
   if (!directive || directive != "bearer") {
-    res
-      .status(401)
-      .json({ message: "your prime directive is to fix your directive" });
+    res.status(401).json({
+      message: "your prime directive is to fix your directive",
+      hint:
+        "add 'bearer ' (include the space) in the string preceding your token query (i.e. 'bearer eyJhbGciOiJIUzI...')",
+    });
   }
   if (token) {
     jwt.verify(token, secrets.jwtSecret, (err, decodedToken) => {
