@@ -12,7 +12,7 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
-server.use("/", authRouter);
+server.use("/auth", authRouter);
 server.use("/profile", authenticate, dashboard);
 
 module.exports = server;
