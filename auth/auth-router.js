@@ -6,10 +6,6 @@ const cryptZ = require("bcryptjs");
 const secrets = require("../secrets/secret");
 
 router.route("/users").get((req, res) => {
-  let user = req.body;
-  const hash = cryptZ.hashSync(user.password, 12);
-  user.password = hash;
-
   Users.getUsers()
     .then((allUsers) => {
       res.status(201).json({ message: "all users", users: allUsers });
@@ -28,9 +24,27 @@ router.route("/register").post((req, res) => {
   console.log(`user is ${user.username}`);
   Users.addUser(user)
     .then((userRegRes) => {
-      res
-        .status(201)
-        .json({ message: "Registration successful", regInfo: userRegRes });
+      Users.findBy({ content: userRegRes[0], key: "id" })
+        .then((usr) => {
+          const token = generateToken(usr);
+
+          res.status(201).json({
+            message: "Registration successful",
+            user: {
+              id: usr.id,
+              email: usr.email,
+              username: usr.username,
+            },
+            authorization: token,
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            message:
+              "something went wrong looking for the entry after creation.",
+            err: err.message,
+          });
+        });
     })
     .catch((err) => {
       res
@@ -41,8 +55,7 @@ router.route("/register").post((req, res) => {
 
 router.route("/login").post((req, res) => {
   let { username, password } = req.body;
-  Users.findBy(username)
-    .first()
+  Users.findBy({ content: username, key: "username" })
     .then((user) => {
       if (!user) {
         res.status(404).json({
@@ -53,7 +66,7 @@ router.route("/login").post((req, res) => {
       if (user && cryptZ.compareSync(password, user.password)) {
         const token = generateToken(user);
 
-        res.status(200).json({ message: `welcome, ${username}`, token });
+        res.status(200).json({ message: `welcome, ${username}`, token, user });
       } else {
         res.status(401).json({
           message: "username or password incorrect",
@@ -64,7 +77,7 @@ router.route("/login").post((req, res) => {
       }
     })
     .catch((err) => {
-      res.status(500).json({ message: err.message });
+      res.status(500).json({ message: err.message, err: err, idk: "IDK" });
     });
 });
 
