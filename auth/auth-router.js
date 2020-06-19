@@ -66,11 +66,24 @@ router.route("/login").post((req, res) => {
       if (user && cryptZ.compareSync(password, user.password)) {
         const token = generateToken(user);
 
-        res.status(200).json({ message: `welcome, ${username}`, token, user });
+        res.status(200).json({
+          message: `welcome, ${username}`,
+
+          user: {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+          },
+          token,
+        });
       } else {
         res.status(401).json({
           message: "username or password incorrect",
-          user: user,
+          user: {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+          },
           passwordSupplied: password,
           passwordsMatch: cryptZ.compareSync(password, user.password),
         });

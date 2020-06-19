@@ -28,5 +28,6 @@ function findBy(filter) {
 }
 
 function remove(username) {
-  return db("users").where({ username: username }).del();
+  console.log("server attempting to delete, ", username);
+  return db("users");
 }
