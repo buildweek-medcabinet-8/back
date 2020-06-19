@@ -22,7 +22,9 @@ function addUser(user) {
 }
 
 function findBy(filter) {
-  return db("users");
+  return db("users as u")
+    .where({ [filter.key]: filter.content })
+    .first();
 }
 
 function remove(username) {
