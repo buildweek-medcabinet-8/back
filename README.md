@@ -49,6 +49,7 @@ response data:
 
 ```json
 {
+  "message": "Registration successful",
   "user": {
     "id": 1,
     "email": "username@email.com",
