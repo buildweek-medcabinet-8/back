@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
-const pg = require("pg");
 
 const authenticate = require("./auth/authenticate-middleware.js");
 const authRouter = require("./auth/auth-router.js");
@@ -10,7 +9,6 @@ const dashboard = require("./users/dashboard-router.js");
 const server = express();
 
 server.use(helmet());
-server.use(pg());
 
 server.use(cors());
 server.use(express.json());
