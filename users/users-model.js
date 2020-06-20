@@ -20,7 +20,7 @@ function addUser(user) {
 
   return db("users").insert(user);
 }
-
+//I used a dynamic key here so you can just find a user by any prop in the table
 function findBy(filter) {
   return db("users as u")
     .where({ [filter.key]: filter.content })

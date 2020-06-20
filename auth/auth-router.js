@@ -94,22 +94,6 @@ router.route("/login").post((req, res) => {
     });
 });
 
-router.get("/logout", async (req, res) => {
-  if (req.session) {
-    req.session.destroy((err) => {
-      if (err) {
-        res.send(
-          "for some reason we aren't allowing you to log out. What a shame"
-        );
-      } else {
-        res.send("You have just gone and logged yourself out. Great job.");
-      }
-    });
-  } else {
-    res.end();
-  }
-});
-
 function generateToken(user) {
   const payload = {
     subject: user.id, //sub
