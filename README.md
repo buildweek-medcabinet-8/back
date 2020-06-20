@@ -96,6 +96,24 @@ response data:
 
 ```json
 {
-  "message": "welcome to your secret page"
+  "message": "welcome to your secret page, ${user} "
+}
+```
+
+#### GET /profile/delete-user
+
+request data:
+
+```json
+{
+  "headers": { "authorization": "bearer really.long.token" }
+}
+```
+
+response data:
+
+```json
+{
+  "message": "YOU JUST DELETED ${user}, be sure to delete the token from memory"
 }
 ```
