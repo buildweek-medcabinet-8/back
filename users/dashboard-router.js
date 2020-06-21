@@ -13,27 +13,6 @@ router.get("/", (req, res) => {
 router.get("/recommendations", async (req, res) => {
   const [directive, token] = req.headers.authorization.split(" ");
   let user = req.decodedJwt.username;
-  //IDK DUDE MAYBE CALL THE DS API OR SOMETHING AY?
-  // Users.findBy()
-  //   .then((usr) => {
-  //     const token = generateToken(usr);
-
-  //     res.status(201).json({
-  //       message: "Registration successful",
-  //       user: {
-  //         id: usr.id,
-  //         email: usr.email,
-  //         username: usr.username,
-  //       },
-  //       authorization: token,
-  //     });
-  //   })
-  //   .catch((err) => {
-  //     res.status(500).json({
-  //       message: "something went wrong looking for the entry after creation.",
-  //       err: err.message,
-  //     });
-  //   });
 
   let returnedObj = {
     yourName: `${user}, do a thing!`,
@@ -44,54 +23,88 @@ router.get("/recommendations", async (req, res) => {
     flavor: ["Minty", "Chemical", "Cheese"],
     description: "I mean this weed is basically the weediest and the cheesiest",
   };
-  //So here's the question of the day. If we're not allowed to write additional tables, how do we expect
-  //to store a user's weed preferences?
+
   res.status(200).json({ content: returnedObj, message: "Your strains" });
 });
 
-router.post("/update-preferences", (req, res) => {
+router.post("/update-preferences", async (req, res) => {
   /////////const [directive, token] = req.headers.authorization.split(" ");
   ///////////////let user = req.decodedJwt.username;
+
   let user = "user2";
-  //let newPreferences = req.body.somethin
-  let newPreferences = {
-    flavors: ["Earthy", "Sweet", "Citrus", "Flowery", "Violet", "Diesel"],
-    effects: ["Creative", "Energetic", "Tingly", "Euphoric"],
-  };
+  let newPreferences = req.body;
+  // let newPreferences = {
+  //   flavors: [
+  //     "Tropical",
+  //     "Strawberry",
+  //     "Blueberry",
+  //     "Mint",
+  //     "Apple",
+  //     "Honey",
+  //     "Lavender",
+  //     "Lime",
+  //     "Coffee",
+  //     "Ammonia",
+  //     "Minty",
+  //     "Tree",
+  //     "Fruit",
+  //     "Butter",
+  //     "Pineapple",
+  //   ],
+  //   effects: [
+  //     "Euphoric",
+  //     "Relaxed",
+  //     "Aroused",
+  //     "Happy",
+  //     "Uplifted",
+  //     "Hungry",
+  //     "Talkative",
+  //     "None",
+  //     "Giggly",
+  //     "Focused",
+  //     "Sleepy",
+  //   ],
+  // };
 
-  let payload = Users.getEffectOrFlavorIds("flavor")
-    .then((allFlavors) => {
-      const someFlavors = allFlavors.filter((flavor) => {
-        console.log(flavor.flavor);
-        console.log(newPreferences.flavors);
-        return newPreferences.flavors.some(function (e) {
-          return e == flavor.flavor;
-        });
-      });
+  let payload = { flavors: [], effects: [] };
 
-      res.status(201).json({
-        message: "testing flavor id getter",
-        response: someFlavors,
-      });
-      // newPreferences.flavors.forEach((flavor) => {});
-    })
-    .catch((err) => {
-      res
-        .status(500)
-        .json({ message: "error time", err: err, errmessage: err.message });
+  let userObj = await Users.findBy({ key: "username", content: user });
+
+  await Users.deletePrefs(userObj.id, "effect");
+  await Users.deletePrefs(userObj.id, "flavor");
+  let allFlavors = await Users.getEffectOrFlavorIds("flavor");
+  let allEffects = await Users.getEffectOrFlavorIds("effect");
+
+  const someFlavors = allFlavors.filter((flavor) => {
+    console.log(flavor.flavor);
+    return newPreferences.flavors.some(function (e) {
+      return e == flavor.flavor;
     });
-  Users.updatePrefs(newPreferences, user, "flavor")
-    .then((response) => {
-      res.status(201).json({
-        message: "uhhh well here we are, ya did it, updations....",
-        response: response,
-      });
-    })
-    .catch((err) => {
-      res
-        .status(500)
-        .json({ message: "error time", err: err, errmessage: err.message });
+  });
+
+  const someEffects = allEffects.filter((effect) => {
+    console.log(effect.effect);
+    return newPreferences.effects.some(function (e) {
+      return e == effect.effect;
     });
+  });
+
+  someFlavors.map((flavor) => {
+    payload.flavors.push({ user_id: userObj.id, flavor_id: flavor.id });
+  });
+  someEffects.map((effect) => {
+    payload.effects.push({ user_id: userObj.id, effect_id: effect.id });
+  });
+
+  let flavorUpdate = await Users.updatePrefs(payload.flavors, "flavor");
+  let effectUpdate = await Users.updatePrefs(payload.effects, "effect");
+
+  res.status(200).json({
+    message:
+      "fr you just updated the flavors and the effects, bravo. I might even send a response or something someday",
+    sideNote:
+      "just so you know, this update system is designed to delete your previous preferences. I hope you remember them",
+  });
 });
 
 router.get("/delete-user", (req, res) => {

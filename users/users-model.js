@@ -37,14 +37,16 @@ function remove(username) {
   return db("users");
 }
 
-function deletePrefs(user, type) {
+function deletePrefs(userID, type) {
   if (type === "effect") {
     return db("user_effects as ue")
       .join("users as u", "ue.user_id", "u.id")
+      .where("ue.user_id", userID)
       .del();
   } else if (type === "flavor") {
     return db("user_flavors as uf")
       .join("users as u", "uf.user_id", "u.id")
+      .where("uf.user_id", userID)
       .del();
   } else {
     return "you messed up. pass a 'type' argument as either 'effect' or 'flavor' please";
@@ -60,17 +62,11 @@ function getEffectOrFlavorIds(type) {
   }
 }
 
-async function updatePrefs(strObj, user, type) {
+function updatePrefs(payload, type) {
   if (type === "effect") {
-    return db("user_effects as ue")
-      .join("users as u", "ue.user_id", "u.id")
-      .join("effects as e", "e.effect")
-      .insert({ user_id: "" });
+    return db("user_effects as ue").insert(payload);
   } else if (type === "flavor") {
-    return db("user_flavors as uf")
-      .join("users as u", "uf.user_id", "u.id")
-      .join("flavors as f")
-      .insert({ user_id: 1, flavor_id: 33 });
+    return db("user_flavors as uf").insert(payload);
   } else {
     return "you messed up. pass a 'type' argument as either 'effect' or 'flavor' please";
   }
