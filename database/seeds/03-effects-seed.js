@@ -21,11 +21,5 @@ exports.seed = function (knex) {
     return { effect: effect };
   });
 
-  // Deletes ALL existing entries
-  return knex("effects")
-    .del()
-    .then(function () {
-      // Inserts seed entries
-      return knex("effects").insert(formattedEffects);
-    });
+  return knex("effects").insert(formattedEffects);
 };

@@ -9,16 +9,43 @@ exports.up = function (knex) {
     .createTable("flavors", (tbl) => {
       tbl.increments();
       tbl.string("flavor", 128).notNullable().unique();
+      // tbl
+      // .integer("flavor_id")
+      // .notNullable()
+      // .unsigned()
+      // .references("species.id");
     })
     .createTable("effects", (tbl) => {
       tbl.increments();
       tbl.string("effect", 128).notNullable().unique();
     })
     .createTable("user_flavors", (tbl) => {
-      tbl.increments();
+      tbl
+        .integer("user_id")
+        .notNullable()
+        .unsigned()
+        .references("users.id")
+        .onDelete("cascade");
+      tbl
+        .integer("flavor_id")
+        .notNullable()
+        .unsigned()
+        .references("flavors.id");
+      tbl.primary(["user_id", "flavor_id"]); //forces the primary key so that there can't be id mismatches
     })
     .createTable("user_effects", (tbl) => {
-      tbl.increments();
+      tbl
+        .integer("user_id")
+        .notNullable()
+        .unsigned()
+        .references("users.id")
+        .onDelete("cascade");
+      tbl
+        .integer("effect_id")
+        .notNullable()
+        .unsigned()
+        .references("effects.id");
+      tbl.primary(["user_id", "effect_id"]); //forces the primary key so that there can't be id mismatches
     });
 };
 //SELECT EFFECTID FROM USER_EFFECTS WHERE USERID = ID
