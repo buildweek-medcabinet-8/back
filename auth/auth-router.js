@@ -24,27 +24,33 @@ router.route("/register").post((req, res) => {
   console.log(`user is ${user.username}`);
   Users.addUser(user)
     .then((userRegRes) => {
-      Users.findBy({ content: userRegRes[0], key: "id" })
-        .then((usr) => {
-          const token = generateToken(usr);
-
-          res.status(201).json({
-            message: "Registration successful",
-            user: {
-              id: usr.id,
-              email: usr.email,
-              username: usr.username,
-            },
-            authorization: token,
-          });
-        })
-        .catch((err) => {
-          res.status(500).json({
-            message:
-              "something went wrong looking for the entry after creation.",
-            err: err.message,
-          });
+      res
+        .status(201)
+        .json({
+          message: "You successfully registered! (response being updated)",
         });
+
+      // Users.findBy({ content: userRegRes[0], key: "id" })
+      //   .then((usr) => {
+      //     const token = generateToken(usr);
+
+      //     res.status(201).json({
+      //       message: "Registration successful",
+      //       user: {
+      //         id: usr.id,
+      //         email: usr.email,
+      //         username: usr.username,
+      //       },
+      //       authorization: token,
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     res.status(500).json({
+      //       message:
+      //         "something went wrong looking for the entry after creation.",
+      //       err: err.message,
+      //     });
+      //   });
     })
     .catch((err) => {
       res
