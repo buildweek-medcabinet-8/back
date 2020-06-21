@@ -67,7 +67,7 @@ router.post("/update-preferences", async (req, res) => {
   await Users.updatePrefs(payload.effects, "effect");
 
   res.status(200).json({
-    message: "You updated your preferences",
+    message: "You updated your preferences, " + userObj.username,
     payload: newPreferences,
     sideNote:
       "just so you know, this update system is designed to delete your previous preferences. I hope you remember them",
