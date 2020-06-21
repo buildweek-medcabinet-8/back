@@ -24,11 +24,10 @@ router.route("/register").post((req, res) => {
   console.log(`user is ${user.username}`);
   Users.addUser(user)
     .then((userRegRes) => {
-      res
-        .status(201)
-        .json({
-          message: "You successfully registered! (response being updated)",
-        });
+      res.status(201).json({
+        message: "You successfully registered! (response being updated)",
+        response: userRegRes,
+      });
 
       // Users.findBy({ content: userRegRes[0], key: "id" })
       //   .then((usr) => {

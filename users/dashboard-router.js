@@ -36,7 +36,7 @@ router.get("/recommendations", async (req, res) => {
   //   });
 
   let returnedObj = {
-    yourName: `${token}, do a thing!`,
+    yourName: `${user}, do a thing!`,
     Strain: "weed",
     type: "teh green weed",
     rating: "like 52 stars dude",
@@ -44,7 +44,8 @@ router.get("/recommendations", async (req, res) => {
     flavor: ["Minty", "Chemical", "Cheese"],
     description: "I mean this weed is basically the weediest and the cheesiest",
   };
-
+  //So here's the question of the day. If we're not allowed to write additional tables, how do we expect
+  //to store a user's weed preferences?
   res.status(200).json({ content: returnedObj, message: "Your strains" });
 });
 
