@@ -29,7 +29,7 @@ test account:
 | Type | Path                             | Notes                                        |
 | ---- | ---------------------------------|----------------------------------------------|
 | POST | `/auth/register`                 | register a new user                          |
-| POST | `/auth/login`                    | login an user                                |
+| POST | `/auth/login`                    | login an existing user                       |
 | POST | `/profile/update-preferences`    | replace profile effects and flavors          |
 | GET  | `/profile`                       | view "profile"                               |
 | GET  | `/profile/delete-user`           | delete currently logged in user (via jwt)    |
