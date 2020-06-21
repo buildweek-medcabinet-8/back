@@ -86,10 +86,10 @@ response data:
 ```
 
 #### GET /profile
-
+(include auth token in headers)
 request data:
 
-```json (include auth token in headers)
+```json 
 {
   "headers": { "authorization": "bearer really.long.token" }
 }
@@ -104,10 +104,10 @@ response data:
 ```
 
 #### GET /profile/delete-user
-
+(include auth token in headers)
 request data:
 
-```json (include auth token in headers)
+```json 
 {
   "headers": { "authorization": "bearer really.long.token" }
 }
@@ -122,7 +122,7 @@ response data:
 ```
 
 
-#### GET /profile/recommendations --- // NOTE! This is just dummy data, DS will update us once they're live. take note of the array.
+#### GET /profile/recommendations. This is just dummy data, DS will update us once they're live. take note of the array.
 
 request data:
 
@@ -148,12 +148,13 @@ response data:
   ]
 ```
 
-#### POST /profile/update-preferences --- // NOTE! This will delete your previous preferences
-
+#### POST /profile/update-preferences. This will delete your previous preferences
+   //(Front-end, consider setting a limit of 5-10 effects and 10-20 flavors to increase model accuracy)
+(include auth token in headers)
 request data:
 
-```json (include auth token in headers)
-{         //(Front-end, consider setting a limit of 5-10 effects and 10-20 flavors to increase model accuracy)
+```json 
+{      
      {"flavors": ["Tropical", "Apple".............]} "effects": ["Relaxed", "Happy".............]}
 }
 ```
