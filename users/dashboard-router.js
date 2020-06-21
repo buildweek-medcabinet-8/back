@@ -28,43 +28,10 @@ router.get("/recommendations", async (req, res) => {
 });
 
 router.post("/update-preferences", async (req, res) => {
-  /////////const [directive, token] = req.headers.authorization.split(" ");
-  ///////////////let user = req.decodedJwt.username;
+  let user = req.decodedJwt.username;
+  //let user = "user2";
 
-  let user = "user2";
   let newPreferences = req.body;
-  // let newPreferences = {
-  //   flavors: [
-  //     "Tropical",
-  //     "Strawberry",
-  //     "Blueberry",
-  //     "Mint",
-  //     "Apple",
-  //     "Honey",
-  //     "Lavender",
-  //     "Lime",
-  //     "Coffee",
-  //     "Ammonia",
-  //     "Minty",
-  //     "Tree",
-  //     "Fruit",
-  //     "Butter",
-  //     "Pineapple",
-  //   ],
-  //   effects: [
-  //     "Euphoric",
-  //     "Relaxed",
-  //     "Aroused",
-  //     "Happy",
-  //     "Uplifted",
-  //     "Hungry",
-  //     "Talkative",
-  //     "None",
-  //     "Giggly",
-  //     "Focused",
-  //     "Sleepy",
-  //   ],
-  // };
 
   let payload = { flavors: [], effects: [] };
 
@@ -96,12 +63,12 @@ router.post("/update-preferences", async (req, res) => {
     payload.effects.push({ user_id: userObj.id, effect_id: effect.id });
   });
 
-  let flavorUpdate = await Users.updatePrefs(payload.flavors, "flavor");
-  let effectUpdate = await Users.updatePrefs(payload.effects, "effect");
+  await Users.updatePrefs(payload.flavors, "flavor");
+  await Users.updatePrefs(payload.effects, "effect");
 
   res.status(200).json({
-    message:
-      "fr you just updated the flavors and the effects, bravo. I might even send a response or something someday",
+    message: "You updated your preferences",
+    payload: newPreferences,
     sideNote:
       "just so you know, this update system is designed to delete your previous preferences. I hope you remember them",
   });
@@ -121,17 +88,19 @@ router.get("/delete-user", (req, res) => {
     });
 });
 
+router.get("/preferences", async (req, res) => {
+  let user = req.decodedJwt.username;
+  let userObj = await Users.findBy({ key: "username", content: user });
+  let flavors = await Users.getPrefs(userObj.id, "user_flavors");
+  let effects = await Users.getPrefs(userObj.id, "user_effects");
+
+  res.status(200).json({
+    message: `arr ${user}, here be your prefs`,
+    flavors: flavors,
+    effects: effects,
+  });
+});
+
 module.exports = router;
-// Users.deletePrefs(user, "effect")
-//   .then((response) => {
-//     res
-//       .status(200)
-//       .json({ message: "woohoo, you deleted everything", finish: response });
-//   })
-//   .catch((err) => {
-//     res.status(500).json({
-//       message: "Something went wrong",
-//       err: err,
-//       errmessage: err.message,
-//     });
-//   });
+
+//BIG THING FOR TOMORROW~!~~~~!!!! NEW ENDPOINT SHOULD BE "PREFERENCES" YEAH? KINDA SUCKS NOT TO BE ABLE TO SEE MY STUUUUFFFFFF

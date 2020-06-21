@@ -8,6 +8,7 @@ module.exports = {
   remove,
   updatePrefs,
   deletePrefs,
+  getPrefs,
   getEffectOrFlavorIds,
 };
 //helpers go here
@@ -69,5 +70,19 @@ function updatePrefs(payload, type) {
     return db("user_flavors as uf").insert(payload);
   } else {
     return "you messed up. pass a 'type' argument as either 'effect' or 'flavor' please";
+  }
+}
+
+function getPrefs(userID, table) {
+  if (table === "user_effects") {
+    return db(table)
+      .join("effects as u", "u.id", table + ".effect_id")
+      .where(table + ".user_id", userID)
+      .select("effect");
+  } else if (table === "user_flavors") {
+    return db(table)
+      .join("flavors as f", "f.id", table + ".flavor_id")
+      .where(table + ".user_id", userID)
+      .select("flavor");
   }
 }
