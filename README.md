@@ -158,7 +158,8 @@ request data:
 
 ```json
 {
-          "flavors": ["Tropical", "Apple"]} "effects": ["Relaxed", "Happy"]
+  "flavors": ["Tropical", "Apple"],
+  "effects": ["Relaxed", "Happy"]
 }
 ```
 
