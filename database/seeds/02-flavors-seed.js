@@ -56,11 +56,5 @@ exports.seed = function (knex) {
     return { flavor: flavor };
   });
 
-  // Deletes ALL existing entries
-  return knex("flavors")
-    .del()
-    .then(function () {
-      // Inserts seed entries
-      return knex("flavors").insert(formattedFlavors);
-    });
+  return knex("flavors").insert(formattedFlavors);
 };

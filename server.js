@@ -15,6 +15,6 @@ server.use(cors());
 server.use(express.json());
 
 server.use("/auth", authRouter);
-server.use("/profile", authenticate, dashboard);
-
+server.use("/profile", dashboard);
+//authenticate,  ADD THIS BACK TO PROFILE LATER
 module.exports = server;
