@@ -32,6 +32,7 @@ test account:
 | POST | `/auth/login`                 | login an existing user                    |
 | POST | `/profile/update-preferences` | replace profile effects and flavors       |
 | GET  | `/profile`                    | view profile                              |
+| GET  | `/profile/recommendations`    | view recommendations (dummy data atm)     |
 | GET  | `/profile/preferences`        | view saved preferences                    |
 | GET  | `/profile/delete-user`        | delete currently logged in user (via jwt) |
 
@@ -53,6 +54,7 @@ response data:
 
 ```json
 {
+  "message": "Registration successful",
   "user": {
     "id": 1,
     "email": "username@email.com",
@@ -84,70 +86,6 @@ response data:
   },
   "authorization": "really.long.token"
 }
-```
-
-#### GET /profile
-
-(include auth token in headers)
-request data:
-
-```json
-{
-  "headers": { "authorization": "bearer really.long.token" }
-}
-```
-
-response data:
-
-```json
-{
-  "message": "welcome to your secret page, ${user} "
-}
-```
-
-#### GET /profile/delete-user
-
-(include auth token in headers)
-request data:
-
-```json
-{
-  "headers": { "authorization": "bearer really.long.token" }
-}
-```
-
-response data:
-
-```json
-{
-  "message": "YOU JUST DELETED ${user}, be sure to delete the token from memory"
-}
-```
-
-#### GET /profile/recommendations. This is just dummy data, DS will update us once they're live. take note of the array.
-
-request data:
-
-```json
-{
-  "headers": { "authorization": "bearer really.long.token" }
-}
-```
-
-response data:
-
-```json
-[
-  {
-    "yourName": "username, do a thing!",
-    "Strain": "weed",
-    "type": "teh green weed",
-    "rating": "like 52 stars dude",
-    "effect": ["Creative", "Energetic", "Tingly", "Focused"],
-    "flavor": ["Minty", "Chemical", "Cheese"],
-    "description": "I mean this weed is basically the weediest and the cheesiest"
-  }
-]
 ```
 
 #### POST /profile/update-preferences This will delete your previous preferences
@@ -187,6 +125,51 @@ response data:
 }
 ```
 
+#### GET /profile
+
+(include auth token in headers)
+request data:
+
+```json
+{
+  "headers": { "authorization": "bearer really.long.token" }
+}
+```
+
+response data:
+
+```json
+{
+  "message": "welcome to your secret page, ${user} "
+}
+```
+
+#### GET /profile/recommendations. This is just dummy data, DS will update us once they're live. take note of the array.
+
+request data:
+
+```json
+{
+  "headers": { "authorization": "bearer really.long.token" }
+}
+```
+
+response data:
+
+```json
+[
+  {
+    "yourName": "username, do a thing!",
+    "Strain": "weed",
+    "type": "teh green weed",
+    "rating": "like 52 stars dude",
+    "effect": ["Creative", "Energetic", "Tingly", "Focused"],
+    "flavor": ["Minty", "Chemical", "Cheese"],
+    "description": "I mean this weed is basically the weediest and the cheesiest"
+  }
+]
+```
+
 #### GET /profile/preferences
 
 (include auth token in headers)
@@ -219,5 +202,24 @@ response data:
       "effect": "Happy"
     }
   ]
+}
+```
+
+#### GET /profile/delete-user
+
+(include auth token in headers)
+request data:
+
+```json
+{
+  "headers": { "authorization": "bearer really.long.token" }
+}
+```
+
+response data:
+
+```json
+{
+  "message": "YOU JUST DELETED ${user}, be sure to delete the token from memory"
 }
 ```
