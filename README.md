@@ -137,7 +137,7 @@ response data:
 ```json
 [
      {
-         "yourName": `${user}, do a thing!`,
+         "yourName": "username, do a thing!",
          "Strain": "weed",
          "type": "teh green weed",
          "rating": "like 52 stars dude",
@@ -155,7 +155,7 @@ request data:
 
 ```json 
 {      
-     {"flavors": ["Tropical", "Apple".............]} "effects": ["Relaxed", "Happy".............]}
+          "flavors": ["Tropical", "Apple"]} "effects": ["Relaxed", "Happy"]
 }
 ```
 
