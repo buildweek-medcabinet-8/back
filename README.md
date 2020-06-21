@@ -26,10 +26,13 @@ test account:
 
 #### Table of Contents
 
-| Type | Path             | Notes               |
-| ---- | ---------------- | ------------------- |
-| POST | `/auth/register` | register a new user |
-| POST | `/auth/login`     | login an user       |
+| Type | Path                             | Notes                                        |
+| ---- | ---------------------------------|----------------------------------------------|
+| POST | `/auth/register`                 | register a new user                          |
+| POST | `/auth/login`                    | login an user                                |
+| POST | `/profile/update-preferences`    | replace profile effects and flavors          |
+| GET  | `/profile`                       | view "profile"                               |
+| GET  | `/profile/delete-user`           | delete currently logged in user (via jwt)    |
 
 ## Examples
 
@@ -86,7 +89,7 @@ response data:
 
 request data:
 
-```json
+```json (include auth token in headers)
 {
   "headers": { "authorization": "bearer really.long.token" }
 }
@@ -104,6 +107,25 @@ response data:
 
 request data:
 
+```json (include auth token in headers)
+{
+  "headers": { "authorization": "bearer really.long.token" }
+}
+```
+
+response data:
+
+```json 
+{
+  "message": "YOU JUST DELETED ${user}, be sure to delete the token from memory"
+}
+```
+
+
+#### GET /profile/recommendations --- // NOTE! This is just dummy data, DS will update us once they're live. take note of the array.
+
+request data:
+
 ```json
 {
   "headers": { "authorization": "bearer really.long.token" }
@@ -113,7 +135,34 @@ request data:
 response data:
 
 ```json
+[
+     {
+         "yourName": `${user}, do a thing!`,
+         "Strain": "weed",
+         "type": "teh green weed",
+         "rating": "like 52 stars dude",
+         "effect": ["Creative", "Energetic", "Tingly", "Focused"],
+         "flavor": ["Minty", "Chemical", "Cheese"],
+         "description": "I mean this weed is basically the weediest and the cheesiest",
+       }
+  ]
+```
+
+#### POST /profile/update-preferences --- // NOTE! This will delete your previous preferences
+
+request data:
+
+```json (include auth token in headers)
+{         //(Front-end, consider setting a limit of 5-10 effects and 10-20 flavors to increase model accuracy)
+     {"flavors": ["Tropical", "Apple".............]} "effects": ["Relaxed", "Happy".............]}
+}
+```
+
+response data:
+
+```json
 {
-  "message": "YOU JUST DELETED ${user}, be sure to delete the token from memory"
+    "message": "fr you just updated the flavors and the effects, bravo. I might even send a response or something someday",
+    "sideNote": "just so you know, this update system is designed to delete your previous preferences. I hope you remember them"
 }
 ```
