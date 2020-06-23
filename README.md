@@ -20,7 +20,7 @@ test account:
 {
   "username": "user1",
   "password": "password",
-  "email": "anyemail1@email.com",
+  "email": "anyemail1@email.com"
 }
 ```
 
@@ -31,6 +31,7 @@ test account:
 | POST   | `/auth/register`              | register a new user                        |
 | POST   | `/auth/login`                 | login an existing user                     |
 | POST   | `/profile/recs/save-rec`      | save a returned recommendation             |
+| PUT    | `/profile/change-password`    | change user password                       |
 | PUT    | `/profile/update-preferences` | replace profile effects and flavors        |
 | GET    | `/profile`                    | view profile                               |
 | GET    | `/profile/recs`               | view recommendations (dummy data atm)      |
@@ -74,7 +75,7 @@ request data:
 ```json
 {
   "username": "user1",
-  "password": "password",
+  "password": "password"
 }
 ```
 
@@ -108,6 +109,27 @@ response data:
       "response": "1",
         }
 
+```
+
+#### PUT /profile/change-password This will delete your previous preferences
+
+//(Front-end, consider setting a limit of 5-10 effects and 10-20 flavors to increase model accuracy)
+(include auth token in headers)
+request data:
+
+```json
+{
+  "password": "newPassword"
+}
+```
+
+response data:
+
+```json
+{
+  "message": "YOU JUST UPDATED YOUR PASSWORD, ${user}, GOOD JOB!",
+  "pwres": "int"
+}
 ```
 
 #### PUT /profile/update-preferences This will delete your previous preferences
