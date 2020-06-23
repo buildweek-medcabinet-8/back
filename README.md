@@ -41,13 +41,11 @@
 
 #### Saved_Recommendations
 
-| Field    | Type    | Notes                              |
-| -------- | ------- | ---------------------------------- |
-| id       | integer | _primary key_ and _autoincrements_ |
-| user_id  | integer | _primary key_                      |
-| strain   | string  | _required_                         |
-| password | string  | _required_                         |
-| username | string  | _required_                         |
+| Field   | Type    | Notes                              |
+| ------- | ------- | ---------------------------------- |
+| id      | integer | _primary key_ and _autoincrements_ |
+| user_id | integer | _primary key_                      |
+| strain  | string  | _required_                         |
 
 ## API
 
