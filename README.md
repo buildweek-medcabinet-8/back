@@ -73,6 +73,8 @@ test account:
 | GET    | `/profile/recs`               | view recommendations (dummy data atm)      |
 | GET    | `/profile/recs/saved-recs`    | view user-saved recommendations            |
 | GET    | `/profile/preferences`        | view saved preferences                     |
+| GET    | `/traits/effects`             | get all flavors                            |
+| GET    | `/traits/flavors`             | get all effects                            |
 | DELETE | `/profile/del-user`           | delete currently logged in user (via jwt)  |
 | DELETE | `/profile/recs/del-rec`       | delete single recommendation from server\* |
 
@@ -304,6 +306,46 @@ response data:
     },
     {
       "effect": "Happy"
+    }
+  ]
+}
+```
+
+#### GET /traits/preferences
+
+response data:
+
+```json
+{
+  "message": "here are the effects",
+  "effects": [
+    {
+      "id": 1,
+      "effect": "exampleEffect1"
+    },
+    {
+      "id": 2,
+      "effect": "exampleEffect2..."
+    }
+  ]
+}
+```
+
+#### GET /traits/flavors
+
+response data:
+
+```json
+{
+  "message": "here are the flavors",
+  "effects": [
+    {
+      "id": 1,
+      "effect": "exampleFlavor1"
+    },
+    {
+      "id": 2,
+      "effect": "exampleFlavor2..."
     }
   ]
 }
