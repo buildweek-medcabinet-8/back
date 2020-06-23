@@ -10,6 +10,9 @@ module.exports = {
   deletePrefs,
   getPrefs,
   getEffectOrFlavorIds,
+  getRecommendations,
+  saveRecommendation,
+  delRecommendation,
 };
 //helpers go here
 function getUsers() {
@@ -61,6 +64,21 @@ function getEffectOrFlavorIds(type) {
   if (type === "flavor") {
     return db("flavors");
   }
+}
+
+function getRecommendations(id) {
+  return db("savedRecommendations as sr")
+    .where("sr.user_id", id)
+    .select("sr.strain");
+}
+
+function saveRecommendation(strain, id) {
+  return db("savedRecommendations").insert({ user_id: id, strain: strain });
+}
+function delRecommendation(strain, id) {
+  return db("savedRecommendations")
+    .where({ user_id: id, strain: strain })
+    .del();
 }
 
 function updatePrefs(payload, type) {
