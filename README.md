@@ -27,11 +27,10 @@
 
 #### User_Flavors
 
-user*id: 1, flavor_id: 1
-| Field | Type | Notes |
-| -------- | ------- | ---------------------------------- |
-| flavor_id| integer | \_required* and _primary key_ |
-| user*id | string | \_required* and _primary key_ |
+| Field     | Type    | Notes                          |
+| --------- | ------- | ------------------------------ |
+| flavor_id | integer | \_required\* and _primary key_ |
+| user_id   | string  | \_required\* and _primary key_ |
 
 #### User_Effects
 
@@ -188,7 +187,7 @@ response data:
 
 ```json
 {
-  "message": "arr Josh, here be your prefs",
+  "message": "arr ${user}, here be your prefs",
   "flavors": [
     {
       "flavor": "Tropical"
