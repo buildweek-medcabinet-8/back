@@ -26,18 +26,18 @@ test account:
 
 #### Table of Contents
 
-| Type   | Path                             | Notes                                      |
-| ------ | -------------------------------- | ------------------------------------------ |
-| POST   | `/auth/register`                 | register a new user                        |
-| POST   | `/auth/login`                    | login an existing user                     |
-| POST   | `/profile/save-recommendation`   | save a returned recommendation             |
-| PUT    | `/profile/update-preferences`    | replace profile effects and flavors        |
-| GET    | `/profile`                       | view profile                               |
-| GET    | `/profile/recommendations`       | view recommendations (dummy data atm)      |
-| GET    | `/profile/preferences`           | view saved preferences                     |
-| GET    | `/profile/saved-recommendations` | view user-saved recommendations            |
-| DELETE | `/profile/delete-user`           | delete currently logged in user (via jwt)  |
-| DELETE | `/profile/delete-recommendation` | delete single recommendation from server\* |
+| Type   | Path                          | Notes                                      |
+| ------ | ----------------------------- | ------------------------------------------ |
+| POST   | `/auth/register`              | register a new user                        |
+| POST   | `/auth/login`                 | login an existing user                     |
+| POST   | `/profile/recs/save-rec`      | save a returned recommendation             |
+| PUT    | `/profile/update-preferences` | replace profile effects and flavors        |
+| GET    | `/profile`                    | view profile                               |
+| GET    | `/profile/recs`               | view recommendations (dummy data atm)      |
+| GET    | `/profile/recs/saved-recs`    | view user-saved recommendations            |
+| GET    | `/profile/preferences`        | view saved preferences                     |
+| DELETE | `/profile/del-user`           | delete currently logged in user (via jwt)  |
+| DELETE | `/profile/recs/del-rec`       | delete single recommendation from server\* |
 
 ## Examples
 
@@ -91,7 +91,7 @@ response data:
 }
 ```
 
-#### POST profile/save-recommendation
+#### POST profile/recs/save-rec
 
 request data:
 
@@ -166,7 +166,7 @@ response data:
 }
 ```
 
-#### GET /profile/recommendations. This is just dummy data, DS will update us once they're live. take note of the array.
+#### GET /profile/recs This is just dummy data, DS will update us once they're live. take note of the array.
 
 request data:
 
@@ -192,8 +192,9 @@ response data:
 ]
 ```
 
-#### GET /profile/recommendations
+#### GET /profile/recs/saved-recs
 
+(include auth token in headers)
 request data:
 
 ```json
@@ -205,17 +206,14 @@ request data:
 response data:
 
 ```json
-[
-  {
-    "yourName": "username, do a thing!",
-    "Strain": "weed",
-    "type": "teh green weed",
-    "rating": "like 52 stars dude",
-    "effect": ["Creative", "Energetic", "Tingly", "Focused"],
-    "flavor": ["Minty", "Chemical", "Cheese"],
-    "description": "I mean this weed is basically the weediest and the cheesiest"
-  }
-]
+{
+  "message": "Okay, ${user}, here are your saved recommendations",
+  "recs": [
+    { "strain": "strain1" },
+    { "strain": "strain2" },
+    { "strain": "strain3" }
+  ]
+}
 ```
 
 #### GET /profile/preferences
@@ -253,30 +251,6 @@ response data:
 }
 ```
 
-#### GET /profile/saved-recommendations
-
-(include auth token in headers)
-request data:
-
-```json
-{
-  "headers": { "authorization": "bearer really.long.token" }
-}
-```
-
-response data:
-
-```json
-{
-  "message": "Okay, ${user}, here are your saved recommendations",
-  "recs": [
-    { "strain": "strain1" },
-    { "strain": "strain2" },
-    { "strain": "strain3" }
-  ]
-}
-```
-
 #### DELETE /profile/delete-user
 
 (include auth token in headers)
@@ -296,7 +270,7 @@ response data:
 }
 ```
 
-#### DELETE /profile/delete-recommendation
+#### DELETE /profile/saved-recs/delete-recommendation
 
 (include auth token in headers)
 request data:
