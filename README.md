@@ -11,6 +11,45 @@
 | password | string  | _required_                         |
 | username | string  | _required_                         |
 
+#### Flavors
+
+| Field  | Type    | Notes                              |
+| ------ | ------- | ---------------------------------- |
+| id     | integer | _primary key_ and _autoincrements_ |
+| flavor | string  | _required_ and _unique_            |
+
+#### Effects
+
+| Field  | Type    | Notes                              |
+| ------ | ------- | ---------------------------------- |
+| id     | integer | _primary key_ and _autoincrements_ |
+| effect | string  | _required_ and _unique_            |
+
+#### User_Flavors
+
+user*id: 1, flavor_id: 1
+| Field | Type | Notes |
+| -------- | ------- | ---------------------------------- |
+| flavor_id| integer | \_required* and _primary key_ |
+| user*id | string | \_required* and _primary key_ |
+
+#### User_Effects
+
+| Field     | Type    | Notes                        |
+| --------- | ------- | ---------------------------- |
+| effect_id | integer | _required_ and _primary key_ |
+| user_id   | integer | _required_ and _primary key_ |
+
+#### Saved_Recommendations
+
+| Field    | Type    | Notes                              |
+| -------- | ------- | ---------------------------------- |
+| id       | integer | _primary key_ and _autoincrements_ |
+| user_id  | integer | _primary key_                      |
+| strain   | string  | _required_                         |
+| password | string  | _required_                         |
+| username | string  | _required_                         |
+
 ## API
 
 BASE URL: https://bw-medcab-8.herokuapp.com
