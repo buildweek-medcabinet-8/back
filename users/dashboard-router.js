@@ -2,7 +2,6 @@ const router = require("express").Router();
 const Users = require("./users-model");
 
 router.get("/", (req, res) => {
-  const [directive, token] = req.headers.authorization.split(" ");
   let user = req.decodedJwt.username;
 
   res.status(200).json({
@@ -11,7 +10,6 @@ router.get("/", (req, res) => {
 });
 
 router.get("/recommendations", async (req, res) => {
-  const [directive, token] = req.headers.authorization.split(" ");
   let user = req.decodedJwt.username;
 
   let returnedObj = {
@@ -27,7 +25,7 @@ router.get("/recommendations", async (req, res) => {
   res.status(200).json({ content: returnedObj, message: "Your strains" });
 });
 
-router.post("/update-preferences", async (req, res) => {
+router.put("/update-preferences", async (req, res) => {
   let user = req.decodedJwt.username;
   //let user = "user2";
 
@@ -74,8 +72,7 @@ router.post("/update-preferences", async (req, res) => {
   });
 });
 
-router.get("/delete-user", (req, res) => {
-  const [directive, token] = req.headers.authorization.split(" ");
+router.delete("/delete-user", (req, res) => {
   let user = req.decodedJwt.username;
   Users.remove(user)
     .then((rmvdUsr) => {
@@ -88,11 +85,58 @@ router.get("/delete-user", (req, res) => {
     });
 });
 
+router.get("/saved-recommendations", (req, res) => {
+  let user = req.decodedJwt.username;
+  let id = req.decodedJwt.subject;
+  Users.getRecommendations(id)
+    .then((recs) => {
+      res.status(200).json({
+        message: `Okay, ${user}, here are your saved recommendations`,
+        recs: recs,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "Something went wrong" });
+    });
+});
+
+router.delete("/delete-recommendation", (req, res) => {
+  let user = req.decodedJwt.username;
+  let id = req.decodedJwt.subject;
+  let strain = req.body.strain;
+
+  Users.delRecommendation(strain, id)
+    .then((recs) => {
+      res.status(200).json({
+        message: `Okay, ${user}, you just deleted ${strain} from your recommendations`,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "Something went wrong" });
+    });
+});
+
+router.post("/save-recommendation", (req, res) => {
+  let user = req.decodedJwt.username;
+  let id = req.decodedJwt.subject;
+  let strain = req.body.strain;
+  Users.saveRecommendation(strain, id)
+    .then((rez) => {
+      res.status(200).json({
+        message: `Okay, ${user}, you just saved a ${strain} w33d.`,
+        response: rez,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "Something went wrong" });
+    });
+});
+
 router.get("/preferences", async (req, res) => {
   let user = req.decodedJwt.username;
-  let userObj = await Users.findBy({ key: "username", content: user });
-  let flavors = await Users.getPrefs(userObj.id, "user_flavors");
-  let effects = await Users.getPrefs(userObj.id, "user_effects");
+  let id = req.decodedJwt.subject;
+  let flavors = await Users.getPrefs(id, "user_flavors");
+  let effects = await Users.getPrefs(id, "user_effects");
 
   res.status(200).json({
     message: `arr ${user}, here be your prefs`,
@@ -102,5 +146,3 @@ router.get("/preferences", async (req, res) => {
 });
 
 module.exports = router;
-
-//BIG THING FOR TOMORROW~!~~~~!!!! NEW ENDPOINT SHOULD BE "PREFERENCES" YEAH? KINDA SUCKS NOT TO BE ABLE TO SEE MY STUUUUFFFFFF
