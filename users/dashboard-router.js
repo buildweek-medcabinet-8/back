@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Users = require("./users-model");
+const Account = require("./account-model");
 
 router.get("/", (req, res) => {
   let user = req.decodedJwt.username;
@@ -82,6 +83,24 @@ router.delete("/delete-user", (req, res) => {
     })
     .catch((err) => {
       res.status(500).json({ message: "Something went wrong" });
+    });
+});
+
+router.put("/change-password", (req, res) => {
+  let id = req.decodedJwt.subject;
+  let user = req.decodedJwt.username;
+  let password = req.body.password;
+  Account.changePassword(id, password)
+    .then((pwres) => {
+      res.status(200).json({
+        message: `YOU JUST UPDATED YOUR PASSWORD, ${user}, GOOD JOB!`,
+        pwres: pwres,
+      });
+    })
+    .catch((err) => {
+      res
+        .status(500)
+        .json({ message: "bropken times", err: err, errmessage: err.message });
     });
 });
 
