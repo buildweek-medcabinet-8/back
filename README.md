@@ -18,9 +18,9 @@ test account:
 
 ```json
 {
-  "email": "anyemail1@email.com",
   "username": "user1",
-  "password": "password"
+  "password": "password",
+  "email": "anyemail1@email.com",
 }
 ```
 
@@ -73,8 +73,8 @@ request data:
 
 ```json
 {
-  "username": "test123",
-  "password": "test"
+  "username": "user1",
+  "password": "password",
 }
 ```
 
