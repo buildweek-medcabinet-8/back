@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const secrets = require("../secrets/secret");
+const secrets = require("../../secrets/secret");
 module.exports = (req, res, next) => {
   const [directive, token] = req.headers.authorization.split(" ");
   if (!directive || directive != "bearer") {
