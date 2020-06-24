@@ -2,10 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 
-const authenticate = require("./auth/authenticate-middleware.js");
-const authRouter = require("./auth/auth-router.js");
-const dashboard = require("./users/dashboard-router.js");
-const traitsRouter = require("./traits/traits-router");
+const authenticate = require("./models-routes-helpers/auth/authenticate-middleware.js");
+const authRouter = require("./models-routes-helpers/auth/auth-router.js");
+const dashboard = require("./models-routes-helpers/users/dashboard-router.js");
+const traitsRouter = require("./models-routes-helpers/traits/traits-router");
 const idPasser = require("./middleware/idPasser");
 
 const server = express();
@@ -18,4 +18,5 @@ server.use(express.json());
 server.use("/auth", authRouter);
 server.use("/profile", authenticate, dashboard);
 server.use("/traits", traitsRouter);
+
 module.exports = server;

@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const Users = require("../users/users-model");
 const cryptZ = require("bcryptjs");
 
-const secrets = require("../secrets/secret");
+const secrets = require("../../secrets/secret");
 
 router.route("/users").get((req, res) => {
   Users.getUsers()
