@@ -60,8 +60,14 @@ exports.up = function (knex) {
         .unsigned()
         .references("users.id")
         .onDelete("cascade");
+      tbl.string("listName", 256);
     })
-    .createTable("strain_lists", (tbl) => {});
+    .createTable("preference_lists", (tbl) => {
+      tbl.integer("list_id").notNullable().unsigned().references("lists.id");
+      tbl.integer("effect_id").unsigned().references("effects.id");
+      tbl.integer("flavor_id").unsigned().references("flavors.id");
+      tbl.primary(["effect_id", "flavor_id", "list_id"]); //forces the primary key so that there can't be id mismatches
+    });
 };
 exports.down = function (knex, Promise) {
   return knex.schema

@@ -1,6 +1,9 @@
 const router = require("express").Router();
 const Users = require("./users-model");
 const Account = require("./account-model");
+const listsRouter = require("../lists/lists-router");
+
+router.use("/lists", listsRouter);
 
 router.get("/", (req, res) => {
   let user = req.decodedJwt.username;
