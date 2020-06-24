@@ -51,7 +51,17 @@ exports.up = function (knex) {
         .references("users.id")
         .onDelete("cascade");
       tbl.string("strain", 128).notNullable();
-    });
+    })
+    .createTable("lists", (tbl) => {
+      tbl.increments();
+      tbl
+        .integer("user_id")
+        .notNullable()
+        .unsigned()
+        .references("users.id")
+        .onDelete("cascade");
+    })
+    .createTable("strain_lists", (tbl) => {});
 };
 exports.down = function (knex, Promise) {
   return knex.schema
