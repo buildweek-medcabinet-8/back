@@ -2,7 +2,8 @@ const router = require("express").Router();
 const Users = require("./users-model");
 const Account = require("./account-model");
 const listsRouter = require("../lists/lists-router");
-
+const axios = require("axios");
+const FormData = require("form-data");
 router.use("/lists", listsRouter);
 
 router.get("/", (req, res) => {
@@ -16,56 +17,27 @@ router.get("/", (req, res) => {
 router.get("/recommendations", async (req, res) => {
   let user = req.decodedJwt.username;
 
-  let returnedObj = [
-    {
-      yourName: `${user}, here's w33d 1!`,
-      Strain: "weed",
-      type: "teh green weed",
-      rating: 5,
-      effect: ["Creative", "Energetic", "Tingly", "Focused"],
-      flavor: ["Minty", "Chemical", "Cheese"],
-      description:
-        "I mean this weed is basically the weediest and the cheesiest",
-    },
-    {
-      yourName: `${user}, here's w33d 2!`,
-      Strain: "POTATO",
-      type: "sativa",
-      rating: 4,
-      effect: ["Creative", "Energetic", "Tingly", "Focused"],
-      flavor: ["Minty", "Chemical", "Cheese"],
-      description: "mashed potatoes. enjoy",
-    },
-    {
-      yourName: `${user}, here's w33d 3!`,
-      Strain: "Brain Freeze",
-      type: "Hybrid",
-      rating: 5,
-      effect: ["Creative", "Energetic", "Tingly", "Focused"],
-      flavor: ["Minty", "Chemical", "Cheese"],
-      description: "I love bitconnect, yes",
-    },
-    {
-      yourName: `${user}, here's w33d 4!`,
-      Strain: "Empty Chef Boyardee Can",
-      type: "???",
-      rating: 1,
-      effect: ["Creative", "Energetic", "Tingly", "Focused"],
-      flavor: ["Minty", "Chemical", "Cheese"],
-      description: "Kick it around, kick it all over town",
-    },
-    {
-      yourName: `${user}, here's w33d 5!`,
-      Strain: "Bay Leaf",
-      type: "Actual Bay Leaf",
-      rating: 2,
-      effect: ["Creative", "Energetic", "Tingly", "Focused"],
-      flavor: ["Minty", "Chemical", "Cheese"],
-      description: "oops, someone dropped a bay leaf in your recommendations",
-    },
-  ];
+  const formData = new FormData();
+  // const effects = await
+  // const flavors = await
 
-  res.status(200).json({ content: returnedObj, message: "Your strains" });
+  formData.append("Flavors/Effects", "I love choosing weeds");
+
+  const recResponse = await axios.post(
+    "https://medcabinet-v2.herokuapp.com/recommend",
+    formData,
+    {
+      // You need to use `getHeaders()` in Node.js because Axios doesn't
+      // automatically set the multipart form boundary in Node.
+      headers: formData.getHeaders(),
+    }
+  );
+  const recommendations = recResponse.data;
+
+  console.log(recommendations);
+  res
+    .status(200)
+    .json({ recommendations: recommendations, message: "Your strains" });
 });
 
 router.put("/update-preferences", async (req, res) => {
