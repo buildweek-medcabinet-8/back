@@ -2,8 +2,6 @@
 
 ## Schema
 
-DELETE LIST, UPDATE-PREFERENCES
-
 #### Users
 
 | Field    | Type    | Notes                              |
