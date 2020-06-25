@@ -72,25 +72,24 @@ test account:
 
 #### Table of Contents
 
-| Type | Path                       | Notes                                       |
-| ---- | -------------------------- | ------------------------------------------- |
-| POST | `/auth/register`           | register a new user                         |
-| POST | `/auth/login`              | login an existing user                      |
-| POST | `/profile/recs/save-rec`   | save a returned recommendation              |
-| POST | `/profile/recs/add-list`   | save a new list                             |
-| PUT  | `/profile/change-password` | change user password                        |
-| PUT  | `/profile/update-list`     | replace list preferences                    |
-| GET  | `/profile`                 | view profile                                |
-| GET  | `/profile/recs`            | view recommendations (dummy data atm)       |
-| GET  | `/profile/recs/saved-recs` | view user-saved recommendations             |
-| GET  | `/profile/preferences`     | view saved preferences for specific list    |
-| GET  | `/profile/lists`           | Get all profiles/lists associated with user |
-
-| GET | `/traits/effects` | get all flavors |
-| GET | `/traits/flavors` | get all effects |
-| DELETE | `/profile/del-user` | delete currently logged in user (via jwt) |
-| DELETE | `/profile/recs/del-rec` | delete single recommendation from server |
-| DELETE | `/profile/delete-list` | delete list from server |
+| Type   | Path                       | Notes                                       |
+| ------ | -------------------------- | ------------------------------------------- |
+| POST   | `/auth/register`           | register a new user                         |
+| POST   | `/auth/login`              | login an existing user                      |
+| POST   | `/profile/recs/save-rec`   | save a returned recommendation              |
+| POST   | `/profile/add-list`        | save a new list                             |
+| PUT    | `/profile/change-password` | change user password                        |
+| PUT    | `/profile/update-list`     | replace list preferences                    |
+| GET    | `/profile`                 | view profile                                |
+| GET    | `/profile/recommendations` | view recommendations (dummy data atm)       |
+| GET    | `/profile/recs/saved-recs` | view user-saved recommendations             |
+| GET    | `/profile/preferences`     | view saved preferences for specific list    |
+| GET    | `/profile/lists`           | Get all profiles/lists associated with user |
+| GET    | `/traits/effects`          | get all effects in database                 |
+| GET    | `/traits/flavors`          | get all flavors in database                 |
+| DELETE | `/profile/del-user`        | delete currently logged in user (via jwt)   |
+| DELETE | `/profile/recs/del-rec`    | delete single recommendation from server    |
+| DELETE | `/profile/delete-list`     | delete list from server                     |
 
 ## Examples
 
@@ -144,6 +143,30 @@ response data:
 }
 ```
 
+#### POST profile/recs/add-list
+
+request data:
+
+```json
+{
+  "listName": "Sleepy",
+  "flavors": ["Apple", "Coffee"],
+  "effects": ["Happy", "Uplifted"],
+  "description": "Optional user-provided description"
+}
+```
+
+response data:
+
+```json
+{
+  "message": "you just CREATED list: Sleepyz, user2 ",
+  "effects": ["Happy", "Uplifted"],
+  "flavors": ["Apple", "Coffee"],
+  "description": "get outta hereeeeeee"
+}
+```
+
 #### POST profile/recs/save-rec
 
 request data:
@@ -184,7 +207,7 @@ response data:
 }
 ```
 
-#### PUT /profile/update-preferences This will delete your previous preferences
+#### PUT /profile/update-list
 
 //(Front-end, consider setting a limit of 5-10 effects and 10-20 flavors to increase model accuracy)
 (include auth token in headers)
@@ -230,7 +253,7 @@ response data:
 }
 ```
 
-#### GET /profile/recs This is just dummy data, DS will update us once they're live. take note of the array.
+#### GET /profile/recommendations
 
 request data:
 
@@ -248,7 +271,7 @@ response data:
     "yourName": "username, do a thing!",
     "Strain": "weed",
     "type": "teh green weed",
-    "rating": "like 52 stars dude",
+    "rating": 5,
     "effect": ["Creative", "Energetic", "Tingly", "Focused"],
     "flavor": ["Minty", "Chemical", "Cheese"],
     "description": "I mean this weed is basically the weediest and the cheesiest"
@@ -395,19 +418,21 @@ response data:
 }
 ```
 
-<!--
+#### DELETE /profile/delete-list
 
+(include auth token in headers)
+request data:
+
+```json
 {
-        "username": "user2",
-        "password": "password",
-        "listName": "Sleepy",
-        "flavors": [
-            "Apple",
-            "Coffee" THIS IS THE ADD-LIST JSON BTW
-        ],
-        "effects": [
-            "Happy",
-            "Uplifted"
-        ],
-        "description": "get outta hereeeeeee"
-    } -->
+  "listName": "programatically provide the list name here (Just the raw string)"
+}
+```
+
+response data:
+
+```json
+{
+  "message": "You just deleted list: (List name here)"
+}
+```
