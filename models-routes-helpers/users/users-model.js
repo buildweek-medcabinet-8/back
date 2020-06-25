@@ -7,13 +7,15 @@ module.exports = {
   findBy,
   remove,
   updatePrefs,
-  deletePrefs,
+  deleteList,
   getPrefs,
   getEffectOrFlavorIds,
   getRecommendations,
   saveRecommendation,
   delRecommendation,
   getListId,
+  addList,
+  getLists,
 };
 //helpers go here
 function getUsers() {
@@ -42,32 +44,8 @@ function remove(username) {
   return db("users");
 }
 
-async function getPrefs(listId) {
-  let effects = await db("user_effects as ue")
-    .join("lists as l", "ue.user_id", "u.id")
-    .where("ue.user_id", listId);
-  let flavors = await db("user_effects as ue")
-    .join("lists as l", "ue.user_id", "u.id")
-    .where("ue.user_id", listId);
-  let = await db("user_effects as ue")
-    .join("lists as l", "ue.user_id", "u.id")
-    .where("ue.user_id", listId);
-}
-
-function deletePrefs(userID, type) {
-  if (type === "effect") {
-    return db("user_effects as ue")
-      .join("users as u", "ue.user_id", "u.id")
-      .where("ue.user_id", userID)
-      .del();
-  } else if (type === "flavor") {
-    return db("user_flavors as uf")
-      .join("users as u", "uf.user_id", "u.id")
-      .where("uf.user_id", userID)
-      .del();
-  } else {
-    return "you messed up. pass a 'type' argument as either 'effect' or 'flavor' please";
-  }
+function deleteList(listName, userId) {
+  return db("lists").where({ listName: listName, user_id: userId }).del();
 }
 
 function getEffectOrFlavorIds(type) {
@@ -95,6 +73,7 @@ function delRecommendation(strain, id) {
 }
 
 function updatePrefs(payload, type) {
+  console.log(payload);
   if (type === "effect") {
     return db("list_effects").insert(payload);
   } else if (type === "flavor") {
@@ -102,7 +81,7 @@ function updatePrefs(payload, type) {
   } else if (type === "description") {
     return db("list_descriptions").insert({
       userDescription: payload.description,
-      list_id,
+      list_id: payload.list_ID,
     });
   } else {
     return "you messed up. pass a 'type' argument as either 'effect', description, or 'flavor' please";
@@ -130,4 +109,29 @@ function getPrefs(listID, table) {
 
 function getListId(listName, id) {
   return db("lists").where({ listName: listName, user_id: id });
+}
+
+function addList(listName, user_id) {
+  return db("lists").insert({ user_id, listName });
+}
+
+function getLists(user_id, type) {
+  if (type === "effects") {
+    return db("list_effects as le")
+      .leftJoin("lists as l", "le.list_id", "l.id")
+      .join("effects as e", "e.id", "le.effect_id")
+      .where({ user_id: 1 })
+      .select("l.listName", "e.effect");
+  } else if (type === "flavors") {
+    return db("list_flavors as lf")
+      .leftJoin("lists as l", "lf.list_id", "l.id")
+      .join("flavors as f", "f.id", "lf.flavor_id")
+      .where({ user_id: 1 })
+      .select("l.listName", "f.flavor");
+  } else if (type === "list_descriptions") {
+    return db("list_descriptions as ld")
+      .leftJoin("lists as l", "ld.list_id", "l.id")
+      .where({ user_id: 1 })
+      .select("l.listName", "ld.userDescription");
+  }
 }
