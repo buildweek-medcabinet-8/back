@@ -47,6 +47,13 @@
 | effect_id | integer | _required_ and _primary key_ |
 | list_id   | integer | _required_ and _primary key_ |
 
+#### List_Descriptions
+
+| Field           | Type    | Notes                        |
+| --------------- | ------- | ---------------------------- |
+| userDescription | string  | _required_ and _primary key_ |
+| list_id         | integer | _required_ and _primary key_ |
+
 #### Saved_Recommendations
 
 | Field   | Type    | Notes                              |
