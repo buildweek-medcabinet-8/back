@@ -18,8 +18,8 @@ router.get("/recommendations", async (req, res) => {
   let user = req.decodedJwt.username;
 
   const formData = new FormData();
-  // const effects = await
-  // const flavors = await
+  //  const effects = await
+  //  const flavors = await
 
   formData.append("Flavors/Effects", "I love choosing weeds");
 
@@ -42,12 +42,18 @@ router.get("/recommendations", async (req, res) => {
 
 router.put("/update-preferences", async (req, res) => {
   let user = req.decodedJwt.username;
+  let userObj = await Users.findBy({ key: "username", content: user });
 
   let newPreferences = req.body;
-
-  let payload = { flavors: [], effects: [] };
-
-  let userObj = await Users.findBy({ key: "username", content: user });
+  let payload = {
+    flavors: [],
+    effects: [],
+    listName: newPreferences.listName,
+    descriptionObj: {
+      description: newPreferences.description,
+      userid: userObj.id,
+    },
+  };
 
   await Users.deletePrefs(userObj.id, "effect");
   await Users.deletePrefs(userObj.id, "flavor");
@@ -74,15 +80,20 @@ router.put("/update-preferences", async (req, res) => {
   someEffects.map((effect) => {
     payload.effects.push({ user_id: userObj.id, effect_id: effect.id });
   });
+  someEffects.map((effect) => {
+    payload.effects.push({ user_id: userObj.id, effect_id: effect.id });
+  });
 
   await Users.updatePrefs(payload.flavors, "flavor");
   await Users.updatePrefs(payload.effects, "effect");
+  if (payload.descriptionObj.description) {
+    await Users.updatePrefs(payload.descriptionObj, "description");
+  }
 
   res.status(200).json({
     message: "You updated your preferences, " + userObj.username,
     payload: newPreferences,
-    sideNote:
-      "just so you know, this update system is designed to delete your previous preferences. I hope you remember them",
+    sideNote: `preferences updated for list ${newPreferences.listName}`,
   });
 });
 
@@ -118,16 +129,36 @@ router.put("/change-password", (req, res) => {
 });
 
 router.get("/preferences", async (req, res) => {
-  let user = req.decodedJwt.username;
-  let id = req.decodedJwt.subject;
-  let flavors = await Users.getPrefs(id, "user_flavors");
-  let effects = await Users.getPrefs(id, "user_effects");
+  try {
+    let user = req.decodedJwt.username;
+    let id = req.decodedJwt.subject;
+    let listName = req.body.listName;
 
-  res.status(200).json({
-    message: `arr ${user}, here be your prefs`,
-    flavors: flavors,
-    effects: effects,
-  });
+    let listIDObj = await Users.getListId(listName, id);
+    let listId = listIDObj[0].id;
+
+    let flavors = await Users.getPrefs(listId, "list_flavors");
+    let effects = await Users.getPrefs(listId, "list_effects");
+    let descriptionRes = await Users.getPrefs(listId, "list_descriptions");
+
+    description = {
+      userDescription: "no description provided",
+      ...descriptionRes,
+    };
+
+    //the helper is designed to take an ID and not a name but there's an if condition in the helper for now. emergency temporary fix
+    res.status(200).json({
+      message: `arr ${user}, here be your prefs for list ${listName}`,
+      flavors: flavors,
+      effects: effects,
+      description: description.userDescription,
+      listId: listId,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "bropken times", err: err, errmessage: err.message });
+  }
 });
 
 module.exports = router;

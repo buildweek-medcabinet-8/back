@@ -13,6 +13,7 @@ module.exports = {
   getRecommendations,
   saveRecommendation,
   delRecommendation,
+  getListId,
 };
 //helpers go here
 function getUsers() {
@@ -39,6 +40,18 @@ function findBy(filter) {
 function remove(username) {
   console.log("server attempting to delete, ", username);
   return db("users");
+}
+
+async function getPrefs(listId) {
+  let effects = await db("user_effects as ue")
+    .join("lists as l", "ue.user_id", "u.id")
+    .where("ue.user_id", listId);
+  let flavors = await db("user_effects as ue")
+    .join("lists as l", "ue.user_id", "u.id")
+    .where("ue.user_id", listId);
+  let = await db("user_effects as ue")
+    .join("lists as l", "ue.user_id", "u.id")
+    .where("ue.user_id", listId);
 }
 
 function deletePrefs(userID, type) {
@@ -83,24 +96,45 @@ function delRecommendation(strain, id) {
 
 function updatePrefs(payload, type) {
   if (type === "effect") {
-    return db("user_effects as ue").insert(payload);
+    return db("list_effects").insert(payload);
   } else if (type === "flavor") {
-    return db("user_flavors as uf").insert(payload);
+    return db("list_flavors").insert(payload);
+  } else if (type === "description") {
+    return db("list_descriptions").insert({
+      userDescription: payload.description,
+      list_id,
+    });
   } else {
-    return "you messed up. pass a 'type' argument as either 'effect' or 'flavor' please";
+    return "you messed up. pass a 'type' argument as either 'effect', description, or 'flavor' please";
   }
 }
 
-function getPrefs(userID, table) {
-  if (table === "user_effects") {
-    return db(table)
-      .join("effects as u", "u.id", table + ".effect_id")
-      .where(table + ".user_id", userID)
-      .select("effect");
-  } else if (table === "user_flavors") {
-    return db(table)
-      .join("flavors as f", "f.id", table + ".flavor_id")
-      .where(table + ".user_id", userID)
-      .select("flavor");
+function getPrefs(listID, table) {
+  if (table === "list_effects") {
+    return (
+      db(table)
+        .join("effects as e", "e.id", table + ".effect_id")
+        //.where(table + ".list_id", listID)
+        .select("effect")
+    );
+  } else if (table === "list_flavors") {
+    return (
+      db(table)
+        .join("flavors as f", "f.id", table + ".flavor_id")
+        // .where(table + ".list_id", listID)
+        .select("flavor")
+    );
+  } else if (table === "list_descriptions") {
+    return (
+      db(table)
+        .join("lists as l", "l.id", table + ".list_id")
+        .where(table + ".list_id", listID)
+        //.select(table + ".userDescription")
+        .first()
+    );
   }
+}
+
+function getListId(listName, id) {
+  return db("lists").where({ listName: listName, user_id: id });
 }
