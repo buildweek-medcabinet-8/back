@@ -111,27 +111,20 @@ function updatePrefs(payload, type) {
 
 function getPrefs(listID, table) {
   if (table === "list_effects") {
-    return (
-      db(table)
-        .join("effects as e", "e.id", table + ".effect_id")
-        //.where(table + ".list_id", listID)
-        .select("effect")
-    );
+    return db(table)
+      .join("effects as e", "e.id", table + ".effect_id")
+      .where({ list_id: listID })
+      .select("effect");
   } else if (table === "list_flavors") {
-    return (
-      db(table)
-        .join("flavors as f", "f.id", table + ".flavor_id")
-        // .where(table + ".list_id", listID)
-        .select("flavor")
-    );
+    return db(table)
+      .join("flavors as f", "f.id", table + ".flavor_id")
+      .where({ list_id: listID })
+      .select("flavor");
   } else if (table === "list_descriptions") {
-    return (
-      db(table)
-        .join("lists as l", "l.id", table + ".list_id")
-        .where(table + ".list_id", listID)
-        //.select(table + ".userDescription")
-        .first()
-    );
+    return db(table)
+      .join("lists as l", "l.id", table + ".list_id")
+      .where({ list_id: listID })
+      .first();
   }
 }
 

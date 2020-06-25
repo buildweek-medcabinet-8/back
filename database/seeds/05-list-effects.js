@@ -14,5 +14,7 @@ exports.seed = function (knex, Promise) {
     { list_id: 2, effect_id: 9 },
     { list_id: 2, effect_id: 10 },
     { list_id: 2, effect_id: 11 },
+    { list_id: 6, effect_id: 11 },
+    { list_id: 6, effect_id: 12 },
   ]);
 };
