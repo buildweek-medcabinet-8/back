@@ -96,30 +96,38 @@ router.get("/lists", async (req, res) => {
 });
 
 router.get("/recommendations", async (req, res) => {
-  let user = req.decodedJwt.username;
-  let newPreferences = req.body;
+  try {
+    let user = req.decodedJwt.username;
+    let prefs = req.body.prefs;
 
-  const formData = new FormData();
-  //  const effects = await
-  //  const flavors = await
+    const formData = new FormData();
+    //  const effects = await
+    //  const flavors = await
 
-  formData.append("Flavors/Effects", "I love choosing weeds");
+    formData.append("Flavors/Effects", prefs);
 
-  const recResponse = await axios.post(
-    "https://medcabinet-v2.herokuapp.com/recommend",
-    formData,
-    {
-      // You need to use `getHeaders()` in Node.js because Axios doesn't
-      // automatically set the multipart form boundary in Node.
-      headers: formData.getHeaders(),
-    }
-  );
-  const recommendations = recResponse.data;
+    const recResponse = await axios.post(
+      "https://medcabinet-v2.herokuapp.com/recommend",
+      formData,
+      {
+        // You need to use `getHeaders()` in Node.js because Axios doesn't
+        // automatically set the multipart form boundary in Node.
+        headers: formData.getHeaders(),
+      }
+    );
+    const recommendations = recResponse.data;
 
-  console.log(recommendations);
-  res
-    .status(200)
-    .json({ recommendations: recommendations, message: "Your strains" });
+    console.log(recommendations);
+    res
+      .status(200)
+      .json({ recommendations: recommendations, message: "Your strains" });
+  } catch (err) {
+    res.status(500).json({
+      message: "Something went wrong",
+      err: err,
+      errmessage: err.message,
+    });
+  }
 });
 
 router.post("/add-list", async (req, res) => {
