@@ -264,24 +264,33 @@ request data:
 
 ```json
 {
-  "headers": { "authorization": "bearer really.long.token" }
+  "prefs": "EFFECTS, FLAVORS, DESCRIPTION (Pass on a per-list basis, we just need raw strings with everything smudged into one long string)"
 }
 ```
 
 response data:
 
 ```json
-[
-  {
-    "yourName": "username, do a thing!",
-    "Strain": "weed",
-    "type": "teh green weed",
-    "rating": 5,
-    "effect": ["Creative", "Energetic", "Tingly", "Focused"],
-    "flavor": ["Minty", "Chemical", "Cheese"],
-    "description": "I mean this weed is basically the weediest and the cheesiest"
-  }
-]
+{
+  "recommendations": [
+    {
+      "Description": "Diesel Duff is a happy, mellow strain that may just have your thoughts spinning off into new tangents. This strain’s effects tend to be more sativa in nature, taking after its Sour Diesel genetics. It’s a great choice for taming the mind during daytime and getting things done as long as your pursuits are not too labor-intensive.",
+      "Effects": "Euphoric,Happy,Talkative,Giggly,Uplifted",
+      "Flavor": "Sweet,Flowery,Honey",
+      "Rating": 3.8,
+      "Strain": "Diesel-Duff",
+      "Type": "hybrid"
+    },
+    {
+      "Description": "Sour Chocolate sounds like a weird combination, but this sativa-dominant strain’s sweet and sour flavor is one of the best things about it. It has enough oomph to relax the body and the mind, making it a good choice for the end of a long day.",
+      "Effects": "Uplifted,Sleepy,Creative,Happy,Talkative",
+      "Flavor": "Diesel,Sweet,Earthy",
+      "Rating": 3.9,
+      "Strain": "Sour-Chocolate",
+      "Type": "sativa"
+    }
+  ]
+}
 ```
 
 #### GET /profile/recs/saved-recs
