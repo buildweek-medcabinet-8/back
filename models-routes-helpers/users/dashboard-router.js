@@ -6,6 +6,31 @@ const axios = require("axios");
 const FormData = require("form-data");
 router.use("/list", listsRouter);
 
+async function getRecs(prefs) {
+  try {
+    const formData = new FormData();
+
+    formData.append("Flavors/Effects", prefs);
+
+    const recResponse = await axios.post(
+      "https://medcabinet-v2.herokuapp.com/recommend",
+      formData,
+      {
+        // You need to use `getHeaders()` in Node.js because Axios doesn't
+        // automatically set the multipart form boundary in Node.
+        headers: formData.getHeaders(),
+      }
+    );
+    const recommendations = recResponse.data;
+
+    console.log(recommendations);
+
+    return recommendations;
+  } catch (err) {
+    return err.message;
+  }
+}
+
 router.get("/", (req, res) => {
   let user = req.decodedJwt.username;
 
@@ -99,28 +124,12 @@ router.get("/recommendations", async (req, res) => {
   try {
     let user = req.decodedJwt.username;
     let prefs = req.body.prefs;
+    let recommendations = await getRecs(prefs);
 
-    const formData = new FormData();
-    //  const effects = await
-    //  const flavors = await
-
-    formData.append("Flavors/Effects", prefs);
-
-    const recResponse = await axios.post(
-      "https://medcabinet-v2.herokuapp.com/recommend",
-      formData,
-      {
-        // You need to use `getHeaders()` in Node.js because Axios doesn't
-        // automatically set the multipart form boundary in Node.
-        headers: formData.getHeaders(),
-      }
-    );
-    const recommendations = recResponse.data;
-
-    console.log(recommendations);
-    res
-      .status(200)
-      .json({ recommendations: recommendations, message: "Your strains" });
+    res.status(200).json({
+      message: `herez yer weeeds `,
+      recommendations: recommendations,
+    });
   } catch (err) {
     res.status(500).json({
       message: "Something went wrong",
@@ -146,7 +155,7 @@ router.post("/add-list", async (req, res) => {
     );
     let exists = await Users.getListId(listName, id);
     console.log("DOES IT EXIST OR NOT!??!?!?!?!?!??!!? ", exists);
-    if (exists.length > 1) {
+    if (exists.length > 0) {
       res.status(400).json({
         message: "bruh. a list with that name already exists.",
         error: "That's a bummer for ya",
@@ -191,25 +200,35 @@ router.post("/add-list", async (req, res) => {
 
     console.log(payload.flavors);
     console.log(payload.effects);
+    let prefs = [];
 
     await Users.updatePrefs(payload.flavors, "flavor");
     await Users.updatePrefs(payload.effects, "effect");
+
+    payload.flavors.map((flavor) => {
+      prefs.push(flavor);
+    });
+    payload.effects.map((effect) => {
+      prefs.push(effect);
+    });
     if (payload.descriptionObj.description) {
       await Users.updatePrefs(payload.descriptionObj, "description");
+      prefs.push(payload.descriptionObj.description);
     }
+
+    let preffies = prefs.join(" ");
+
+    let recommendations = await getRecs(preffies);
 
     res.status(200).json({
       message: `you just CREATED list: ${listName}, ${user} `,
-      effects: newPreferences.effects,
-      flavors: newPreferences.flavors,
-      description: newPreferences.description,
+      recommendations: recommendations,
     });
   } catch (err) {
     res.status(500).json({
       message: "Something went wrong",
       err: err,
       errmessage: err.message,
-      obj: newListId,
     });
   }
 });
@@ -223,10 +242,26 @@ router.put("/update-list", async (req, res) => {
     let newPreferences = req.body;
     // let listIDObj = await Users.getListId(listName, id);
     // let listId = listIDObj[0].id;
+    console.log(
+      "OKAY SO HERE IS YOUR LIST NAME AND ID THAT YOU'RE SEARCHING ",
+      listName,
+      id
+    );
+    let exists = await Users.getListId(listName, id);
+    console.log("DOES IT EXIST OR NOT!??!?!?!?!?!??!!? ", exists);
+    if (exists.length < 1) {
+      res.status(400).json({
+        message: "bruh. that list doesn't exist",
+        error: "That's a bummer for ya",
+      });
+    }
     await Users.deleteList(listName, id);
-    let newListId = await Users.addList(listName, id);
+    console.log();
+    await Users.addList(listName, id);
+    let newList = await Users.getListId(listName, id);
     let allFlavors = await Users.getEffectOrFlavorIds("flavor");
     let allEffects = await Users.getEffectOrFlavorIds("effect");
+    let newListId = newList[0].id;
     //newListId = newListId[0];
     console.log("LIST ID LIST ID LIST ID AAAAAAAAAAAA ", newListId, newListId);
     let payload = {
@@ -260,20 +295,29 @@ router.put("/update-list", async (req, res) => {
 
     console.log(payload.flavors);
     console.log(payload.effects);
+    let prefs = [];
 
     await Users.updatePrefs(payload.flavors, "flavor");
     await Users.updatePrefs(payload.effects, "effect");
+
+    payload.flavors.map((flavor) => {
+      prefs.push(flavor);
+    });
+    payload.effects.map((effect) => {
+      prefs.push(effect);
+    });
     if (payload.descriptionObj.description) {
       await Users.updatePrefs(payload.descriptionObj, "description");
+      prefs.push(payload.descriptionObj.description);
     }
 
-    res.status(200).json({
-      message: `you updated your preferences for list: ${listName}, ${user} `,
-      effects: newPreferences.effects,
-      flavors: newPreferences.flavors,
-      description: newPreferences.description,
+    let preffies = prefs.join(" ");
 
-      sideNote: `preferences updated for list ${newPreferences.listName}`,
+    let recommendations = await getRecs(preffies);
+
+    res.status(200).json({
+      message: `you just UPDATED list: ${listName}, ${user} `,
+      recommendations: recommendations,
     });
   } catch (err) {
     res.status(500).json({
@@ -282,42 +326,6 @@ router.put("/update-list", async (req, res) => {
       errmessage: err.message,
     });
   }
-});
-
-router.delete("/delete-list", async (req, res) => {
-  try {
-    let listName = req.body.listName;
-    let id = req.decodedJwt.subject;
-
-    await Users.deleteList(listName, id);
-
-    res.status(200).json({
-      message: `You just deleted list: ${listName}`,
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: "Something went wrong",
-      err: err,
-      errmessage: err.message,
-    });
-  }
-});
-
-router.delete("/delete-user", (req, res) => {
-  let user = req.decodedJwt.username;
-  Users.remove(user)
-    .then((rmvdUsr) => {
-      res.status(200).json({
-        message: `YOU JUST DELETED, ${user}, be sure to delete the token from memory`,
-      });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        message: "Something went wrong",
-        err: err,
-        errmessage: err.message,
-      });
-    });
 });
 
 router.put("/change-password", (req, res) => {

@@ -166,10 +166,49 @@ response data:
 
 ```json
 {
-  "message": "you just CREATED list: Sleepyz, user2 ",
-  "effects": ["Happy", "Uplifted"],
-  "flavors": ["Apple", "Coffee"],
-  "description": "get outta hereeeeeee"
+  "message": "you just CREATED list: teethsreeeeeeeeeeeeeeeeerrerereerereeee, user2 ",
+  "recommendations": [
+    {
+      "Description": "Qush is a 70/30 indica-dominant cannabis strain from TGA Genetics, who combines Pre-98 Bubba Kush with Space Queen. Bred for potency as well as flavor, Qush’s resin-packed buds radiate with sweet aromas of grape, cherry, and hashy spice. This tranquilizing strain has a way of calming worries and upset stomachs, but keep in mind that Qush can have a sedating, cloudy effect on the mind so consider saving this one for evenings and lazy days.",
+      "Effects": "Relaxed,Sleepy,Uplifted,Happy,Euphoric",
+      "Flavor": "Flowery,Citrus,Pungent",
+      "Rating": 4.5,
+      "Strain": "Qush",
+      "Type": "indica"
+    },
+    {
+      "Description": "Another member of the “planetary series,” Venus OG is a hybrid strain bearing OG Kush heritage, although its specific parent strains are disputed. Each glistening trichome carries a resemblance to the bright planet this strain is named after, coating its conic buds in a galactic blanket of white crystals. A fresh pine aroma mixed with sour notes of lemon draws you in, and next comes the heavy euphoria to take away your sense of gravity and lift you to a happy, relaxed place.",
+      "Effects": "Focused,Tingly,Happy,Uplifted,Creative",
+      "Flavor": "Citrus,Lemon,Berry",
+      "Rating": 4.8,
+      "Strain": "Venus-Og",
+      "Type": "hybrid"
+    },
+    {
+      "Description": "King Kong, mothered by Ed Rosenthal Super Bud, is an indica-dominant hybrid with head-to-toe effects as strong as the giant ape himself. These dense conic buds come frosted in crystals and ribboned in hairs despite its short flowering time of only 7 to 8 weeks. King Kong is known to have a pungent sour, skunky smell with long-lasting effects that target pain, nausea, anxiety, and the appetite. Even though its genetics tip toward the indica side, King Kong has an uplifting and focused effect enjoyed by indica and sativa lovers alike.",
+      "Effects": "Happy,Focused,Giggly,Relaxed,Uplifted",
+      "Flavor": "Earthy,Flowery,Pungent",
+      "Rating": 4.2,
+      "Strain": "King-Kong",
+      "Type": "hybrid"
+    },
+    {
+      "Description": "The indica-dominant Enigma strain is as mysterious as its name makes it sound; not much is known about its origins, but Enigma is a long-lasting euphoric strain with earthy and tangy flavors. The natural progression of its effects begins with carefree happiness and ends in a sleepy haze. Enigma is a great strain for patients experiencing appetite loss and/or cachexia.",
+      "Effects": "Relaxed,Happy,Sleepy,Giggly,Euphoric",
+      "Flavor": "Citrus,Pungent,Flowery",
+      "Rating": 4.6,
+      "Strain": "Enigma",
+      "Type": "indica"
+    },
+    {
+      "Description": "This strain has quite a few myths circulating about its original appearance. It blew up in San Diego before spreading to the rest of the West Coast. Afghani Bullrider is pretty to look at, with light green buds covered in orange hair, and has a strong sweet and sour smell with some piney freshness. This strain is a heavy hitter that delivers a strong body without the full sedative effects some indicas can have; it heads straight to the brain and may boost creative thoughts while providing physical relaxation. With its high levels of THC and CBD, Afghani Bullrider is recommended for chronic pain, insomnia, and anxiety.",
+      "Effects": "Focused,Uplifted,Happy,Creative,Relaxed",
+      "Flavor": "Lemon,Citrus,Sweet",
+      "Rating": 4.4,
+      "Strain": "Afgahni-Bullrider",
+      "Type": "indica"
+    }
+  ]
 }
 ```
 
@@ -230,11 +269,49 @@ response data:
 
 ```json
 {
-  "message": "you updated your preferences for list: Sleepy, user2 ",
-  "effects": ["Happy", "Uplifted"],
-  "flavors": ["Apple", "Coffee"],
-  "description": "Optional user-provided description",
-  "sideNote": "preferences updated for list Sleepy"
+  "message": "you just UPDATED list: teethsreeeeeeeeeeeeeeeeerrerereerereeee, user2 ",
+  "recommendations": [
+    {
+      "Description": "Qush is a 70/30 indica-dominant cannabis strain from TGA Genetics, who combines Pre-98 Bubba Kush with Space Queen. Bred for potency as well as flavor, Qush’s resin-packed buds radiate with sweet aromas of grape, cherry, and hashy spice. This tranquilizing strain has a way of calming worries and upset stomachs, but keep in mind that Qush can have a sedating, cloudy effect on the mind so consider saving this one for evenings and lazy days.",
+      "Effects": "Relaxed,Sleepy,Uplifted,Happy,Euphoric",
+      "Flavor": "Flowery,Citrus,Pungent",
+      "Rating": 4.5,
+      "Strain": "Qush",
+      "Type": "indica"
+    },
+    {
+      "Description": "Another member of the “planetary series,” Venus OG is a hybrid strain bearing OG Kush heritage, although its specific parent strains are disputed. Each glistening trichome carries a resemblance to the bright planet this strain is named after, coating its conic buds in a galactic blanket of white crystals. A fresh pine aroma mixed with sour notes of lemon draws you in, and next comes the heavy euphoria to take away your sense of gravity and lift you to a happy, relaxed place.",
+      "Effects": "Focused,Tingly,Happy,Uplifted,Creative",
+      "Flavor": "Citrus,Lemon,Berry",
+      "Rating": 4.8,
+      "Strain": "Venus-Og",
+      "Type": "hybrid"
+    },
+    {
+      "Description": "King Kong, mothered by Ed Rosenthal Super Bud, is an indica-dominant hybrid with head-to-toe effects as strong as the giant ape himself. These dense conic buds come frosted in crystals and ribboned in hairs despite its short flowering time of only 7 to 8 weeks. King Kong is known to have a pungent sour, skunky smell with long-lasting effects that target pain, nausea, anxiety, and the appetite. Even though its genetics tip toward the indica side, King Kong has an uplifting and focused effect enjoyed by indica and sativa lovers alike.",
+      "Effects": "Happy,Focused,Giggly,Relaxed,Uplifted",
+      "Flavor": "Earthy,Flowery,Pungent",
+      "Rating": 4.2,
+      "Strain": "King-Kong",
+      "Type": "hybrid"
+    },
+    {
+      "Description": "The indica-dominant Enigma strain is as mysterious as its name makes it sound; not much is known about its origins, but Enigma is a long-lasting euphoric strain with earthy and tangy flavors. The natural progression of its effects begins with carefree happiness and ends in a sleepy haze. Enigma is a great strain for patients experiencing appetite loss and/or cachexia.",
+      "Effects": "Relaxed,Happy,Sleepy,Giggly,Euphoric",
+      "Flavor": "Citrus,Pungent,Flowery",
+      "Rating": 4.6,
+      "Strain": "Enigma",
+      "Type": "indica"
+    },
+    {
+      "Description": "This strain has quite a few myths circulating about its original appearance. It blew up in San Diego before spreading to the rest of the West Coast. Afghani Bullrider is pretty to look at, with light green buds covered in orange hair, and has a strong sweet and sour smell with some piney freshness. This strain is a heavy hitter that delivers a strong body without the full sedative effects some indicas can have; it heads straight to the brain and may boost creative thoughts while providing physical relaxation. With its high levels of THC and CBD, Afghani Bullrider is recommended for chronic pain, insomnia, and anxiety.",
+      "Effects": "Focused,Uplifted,Happy,Creative,Relaxed",
+      "Flavor": "Lemon,Citrus,Sweet",
+      "Rating": 4.4,
+      "Strain": "Afgahni-Bullrider",
+      "Type": "indica"
+    }
+  ]
 }
 ```
 
