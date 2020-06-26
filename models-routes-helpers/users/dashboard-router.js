@@ -148,6 +148,7 @@ router.post("/add-list", async (req, res) => {
         error: "That's a bummer for ya",
       });
     }
+    console.log();
     let newListId = await Users.addList(listName, id);
     let allFlavors = await Users.getEffectOrFlavorIds("flavor");
     let allEffects = await Users.getEffectOrFlavorIds("effect");
