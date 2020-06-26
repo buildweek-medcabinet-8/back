@@ -16,6 +16,7 @@ module.exports = {
   getListId,
   addList,
   getLists,
+  getList,
 };
 //helpers go here
 function getUsers() {
@@ -120,18 +121,39 @@ function getLists(user_id, type) {
     return db("list_effects as le")
       .leftJoin("lists as l", "le.list_id", "l.id")
       .join("effects as e", "e.id", "le.effect_id")
-      .where({ user_id: 1 })
+      .where({ user_id: user_id })
       .select("l.listName", "e.effect");
   } else if (type === "flavors") {
     return db("list_flavors as lf")
       .leftJoin("lists as l", "lf.list_id", "l.id")
       .join("flavors as f", "f.id", "lf.flavor_id")
-      .where({ user_id: 1 })
+      .where({ user_id: user_id })
       .select("l.listName", "f.flavor");
   } else if (type === "list_descriptions") {
     return db("list_descriptions as ld")
       .leftJoin("lists as l", "ld.list_id", "l.id")
-      .where({ user_id: 1 })
+      .where({ user_id: user_id })
+      .select("l.listName", "ld.userDescription");
+  }
+}
+
+function getList(user_id, type, listName) {
+  if (type === "effects") {
+    return db("list_effects as le")
+      .leftJoin("lists as l", "le.list_id", "l.id")
+      .join("effects as e", "e.id", "le.effect_id")
+      .where({ user_id: user_id, listName: listName })
+      .select("l.listName", "e.effect");
+  } else if (type === "flavors") {
+    return db("list_flavors as lf")
+      .leftJoin("lists as l", "lf.list_id", "l.id")
+      .join("flavors as f", "f.id", "lf.flavor_id")
+      .where({ user_id: user_id, listName: listName })
+      .select("l.listName", "f.flavor");
+  } else if (type === "list_descriptions") {
+    return db("list_descriptions as ld")
+      .leftJoin("lists as l", "ld.list_id", "l.id")
+      .where({ user_id: user_id, listName: listName })
       .select("l.listName", "ld.userDescription");
   }
 }

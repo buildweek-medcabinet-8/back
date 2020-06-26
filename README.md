@@ -77,25 +77,25 @@ test account:
 
 #### Table of Contents
 
-| Type   | Path                       | Notes                                       |
-| ------ | -------------------------- | ------------------------------------------- |
-| POST   | `/auth/register`           | register a new user                         |
-| POST   | `/auth/login`              | login an existing user                      |
-| POST   | `/profile/recs/save-rec`   | save a returned recommendation              |
-| POST   | `/profile/add-list`        | save a new list                             |
-| PUT    | `/profile/change-password` | change user password                        |
-| PUT    | `/profile/update-list`     | replace list preferences                    |
-| GET    | `/profile`                 | view profile                                |
-| GET    | `/profile/lists`           | view all lists associated with user         |
-| GET    | `/profile/recommendations` | view recommendations (dummy data atm)       |
-| GET    | `/profile/recs/saved-recs` | view user-saved recommendations             |
-| GET    | `/profile/preferences`     | view saved preferences for specific list    |
-| GET    | `/profile/lists`           | Get all profiles/lists associated with user |
-| GET    | `/traits/effects`          | get all effects in database                 |
-| GET    | `/traits/flavors`          | get all flavors in database                 |
-| DELETE | `/profile/del-user`        | delete currently logged in user (via jwt)   |
-| DELETE | `/profile/recs/del-rec`    | delete single recommendation from server    |
-| DELETE | `/profile/delete-list`     | delete list from server                     |
+| Type   | Path                                 | Notes                                       |
+| ------ | ------------------------------------ | ------------------------------------------- |
+| POST   | `/auth/register`                     | register a new user                         |
+| POST   | `/auth/login`                        | login an existing user                      |
+| POST   | `/profile/recs/save-rec`             | save a returned recommendation              |
+| POST   | `/profile/add-list`                  | save a new list                             |
+| PUT    | `/profile/change-password`           | change user password                        |
+| PUT    | `/profile/update-list`               | replace list preferences                    |
+| GET    | `/profile`                           | view profile                                |
+| GET    | `/profile/lists`                     | view all lists associated with user         |
+| GET    | `/profile/recommendations/:listName` | view recommendations (dummy data atm)       |
+| GET    | `/profile/recs/saved-recs`           | view user-saved recommendations             |
+| GET    | `/profile/preferences`               | view saved preferences for specific list    |
+| GET    | `/profile/lists`                     | Get all profiles/lists associated with user |
+| GET    | `/traits/effects`                    | get all effects in database                 |
+| GET    | `/traits/flavors`                    | get all flavors in database                 |
+| DELETE | `/profile/del-user`                  | delete currently logged in user (via jwt)   |
+| DELETE | `/profile/recs/del-rec`              | delete single recommendation from server    |
+| DELETE | `/profile/delete-list`               | delete list from server                     |
 
 ## Examples
 
@@ -394,36 +394,53 @@ response data:
 }
 ```
 
-#### GET /profile/recommendations
-
-request data:
-
-```json
-{
-  "prefs": "EFFECTS, FLAVORS, DESCRIPTION (Pass on a per-list basis, we just need raw strings with everything smudged into one long string)"
-}
-```
+#### GET /profile/recommendations/:listName
 
 response data:
 
 ```json
 {
+  "message": "herez yer weeeds ",
   "recommendations": [
     {
-      "Description": "Diesel Duff is a happy, mellow strain that may just have your thoughts spinning off into new tangents. This strain’s effects tend to be more sativa in nature, taking after its Sour Diesel genetics. It’s a great choice for taming the mind during daytime and getting things done as long as your pursuits are not too labor-intensive.",
-      "Effects": "Euphoric,Happy,Talkative,Giggly,Uplifted",
-      "Flavor": "Sweet,Flowery,Honey",
-      "Rating": 3.8,
-      "Strain": "Diesel-Duff",
+      "Description": "Qush is a 70/30 indica-dominant cannabis strain from TGA Genetics, who combines Pre-98 Bubba Kush with Space Queen. Bred for potency as well as flavor, Qush’s resin-packed buds radiate with sweet aromas of grape, cherry, and hashy spice. This tranquilizing strain has a way of calming worries and upset stomachs, but keep in mind that Qush can have a sedating, cloudy effect on the mind so consider saving this one for evenings and lazy days.",
+      "Effects": "Relaxed,Sleepy,Uplifted,Happy,Euphoric",
+      "Flavor": "Flowery,Citrus,Pungent",
+      "Rating": 4.5,
+      "Strain": "Qush",
+      "Type": "indica"
+    },
+    {
+      "Description": "Another member of the “planetary series,” Venus OG is a hybrid strain bearing OG Kush heritage, although its specific parent strains are disputed. Each glistening trichome carries a resemblance to the bright planet this strain is named after, coating its conic buds in a galactic blanket of white crystals. A fresh pine aroma mixed with sour notes of lemon draws you in, and next comes the heavy euphoria to take away your sense of gravity and lift you to a happy, relaxed place.",
+      "Effects": "Focused,Tingly,Happy,Uplifted,Creative",
+      "Flavor": "Citrus,Lemon,Berry",
+      "Rating": 4.8,
+      "Strain": "Venus-Og",
       "Type": "hybrid"
     },
     {
-      "Description": "Sour Chocolate sounds like a weird combination, but this sativa-dominant strain’s sweet and sour flavor is one of the best things about it. It has enough oomph to relax the body and the mind, making it a good choice for the end of a long day.",
-      "Effects": "Uplifted,Sleepy,Creative,Happy,Talkative",
-      "Flavor": "Diesel,Sweet,Earthy",
-      "Rating": 3.9,
-      "Strain": "Sour-Chocolate",
-      "Type": "sativa"
+      "Description": "King Kong, mothered by Ed Rosenthal Super Bud, is an indica-dominant hybrid with head-to-toe effects as strong as the giant ape himself. These dense conic buds come frosted in crystals and ribboned in hairs despite its short flowering time of only 7 to 8 weeks. King Kong is known to have a pungent sour, skunky smell with long-lasting effects that target pain, nausea, anxiety, and the appetite. Even though its genetics tip toward the indica side, King Kong has an uplifting and focused effect enjoyed by indica and sativa lovers alike.",
+      "Effects": "Happy,Focused,Giggly,Relaxed,Uplifted",
+      "Flavor": "Earthy,Flowery,Pungent",
+      "Rating": 4.2,
+      "Strain": "King-Kong",
+      "Type": "hybrid"
+    },
+    {
+      "Description": "The indica-dominant Enigma strain is as mysterious as its name makes it sound; not much is known about its origins, but Enigma is a long-lasting euphoric strain with earthy and tangy flavors. The natural progression of its effects begins with carefree happiness and ends in a sleepy haze. Enigma is a great strain for patients experiencing appetite loss and/or cachexia.",
+      "Effects": "Relaxed,Happy,Sleepy,Giggly,Euphoric",
+      "Flavor": "Citrus,Pungent,Flowery",
+      "Rating": 4.6,
+      "Strain": "Enigma",
+      "Type": "indica"
+    },
+    {
+      "Description": "This strain has quite a few myths circulating about its original appearance. It blew up in San Diego before spreading to the rest of the West Coast. Afghani Bullrider is pretty to look at, with light green buds covered in orange hair, and has a strong sweet and sour smell with some piney freshness. This strain is a heavy hitter that delivers a strong body without the full sedative effects some indicas can have; it heads straight to the brain and may boost creative thoughts while providing physical relaxation. With its high levels of THC and CBD, Afghani Bullrider is recommended for chronic pain, insomnia, and anxiety.",
+      "Effects": "Focused,Uplifted,Happy,Creative,Relaxed",
+      "Flavor": "Lemon,Citrus,Sweet",
+      "Rating": 4.4,
+      "Strain": "Afgahni-Bullrider",
+      "Type": "indica"
     }
   ]
 }
