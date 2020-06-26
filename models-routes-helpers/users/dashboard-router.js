@@ -153,10 +153,11 @@ router.post("/add-list", async (req, res) => {
       });
     }
     console.log();
-    let newListId = await Users.addList(listName, id);
+    await Users.addList(listName, id);
+    let newList = await Users.getListId(listName, id);
     let allFlavors = await Users.getEffectOrFlavorIds("flavor");
     let allEffects = await Users.getEffectOrFlavorIds("effect");
-
+    let newListId = newList[0].id;
     //newListId = newListId[0];
     console.log("LIST ID LIST ID LIST ID AAAAAAAAAAAA ", newListId, newListId);
     let payload = {
@@ -208,6 +209,7 @@ router.post("/add-list", async (req, res) => {
       message: "Something went wrong",
       err: err,
       errmessage: err.message,
+      obj: newListId,
     });
   }
 });
