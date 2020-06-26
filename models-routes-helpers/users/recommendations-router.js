@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
     description: "I mean this weed is basically the weediest and the cheesiest",
   };
 
-  res.status(200).json({ content: returnedObj, message: "Your strains" });
+  res.status(200).json({ message: "you've made it to recs. Maginificent." });
 });
 
 router.get("/saved-recs", (req, res) => {

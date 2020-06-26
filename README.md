@@ -148,7 +148,7 @@ response data:
 }
 ```
 
-#### POST profile/recs/add-list
+#### POST profile/add-list
 
 request data:
 
