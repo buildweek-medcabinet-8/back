@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const Users = require("./users-model");
 const Account = require("./account-model");
-const listsRouter = require("../lists/lists-router");
+//const listsRouter = require("../lists/lists-router");
 const axios = require("axios");
 const FormData = require("form-data");
-router.use("/list", listsRouter);
+//router.use("/list", listsRouter);
 
 async function getRecs(prefs) {
   try {
@@ -125,8 +125,14 @@ router.get("/recommendations/:listName", async (req, res) => {
     let { listName } = req.params;
     let id = req.decodedJwt.subject;
     let prefs = [];
-    let user = req.decodedJwt.username;
-
+    let exists = await Users.getUserById(id);
+    console.log("DOES IT EXIST OR NOT!??!?!?!?!?!??!!? ", exists);
+    if (exists.length < 1) {
+      res.status(404).json({
+        message: "bruh. that user doesn't exist. Sorry.",
+        error: "That's a bummer for ya",
+      });
+    }
     let effects = await Users.getList(id, "effects", listName);
     let flavors = await Users.getList(id, "flavors", listName);
     let descriptions = await Users.getList(id, "list_descriptions", listName);
@@ -142,12 +148,13 @@ router.get("/recommendations/:listName", async (req, res) => {
       prefs.push(descriptions.userDescription);
     }
     let preffies = prefs.join(" ");
-
+    console.log("prefs goin to DS are ", preffies);
     let recommendations = await getRecs(preffies);
 
     res.status(200).json({
       message: `herez yer weeeds `,
       recommendations: recommendations,
+      preffies: preffies,
     });
   } catch (err) {
     res.status(500).json({
@@ -390,6 +397,23 @@ router.get("/preferences", async (req, res) => {
       effects: effects,
       description: description.userDescription,
       listId: listId,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "bropken times", err: err, errmessage: err.message });
+  }
+});
+
+router.get("/delete-user", async (req, res) => {
+  try {
+    let id = req.decodedJwt.subject;
+    let user = req.decodedJwt.username;
+
+    await Account.deleteUser(id);
+
+    res.status(200).json({
+      message: `User: ${user} successfully deleted`,
     });
   } catch (err) {
     res
