@@ -166,7 +166,7 @@ response data:
 
 ```json
 {
-  "message": "you just CREATED list: teethsreeeeeeeeeeeeeeeeerrerereerereeee, user2 ",
+  "message": "you just CREATED list: Sleepy, user2 ",
   "recommendations": [
     {
       "Description": "Qush is a 70/30 indica-dominant cannabis strain from TGA Genetics, who combines Pre-98 Bubba Kush with Space Queen. Bred for potency as well as flavor, Qush’s resin-packed buds radiate with sweet aromas of grape, cherry, and hashy spice. This tranquilizing strain has a way of calming worries and upset stomachs, but keep in mind that Qush can have a sedating, cloudy effect on the mind so consider saving this one for evenings and lazy days.",
@@ -269,7 +269,7 @@ response data:
 
 ```json
 {
-  "message": "you just UPDATED list: teethsreeeeeeeeeeeeeeeeerrerereerereeee, user2 ",
+  "message": "you just UPDATED list: Sleepy, user2 ",
   "recommendations": [
     {
       "Description": "Qush is a 70/30 indica-dominant cannabis strain from TGA Genetics, who combines Pre-98 Bubba Kush with Space Queen. Bred for potency as well as flavor, Qush’s resin-packed buds radiate with sweet aromas of grape, cherry, and hashy spice. This tranquilizing strain has a way of calming worries and upset stomachs, but keep in mind that Qush can have a sedating, cloudy effect on the mind so consider saving this one for evenings and lazy days.",
