@@ -87,7 +87,7 @@ test account:
 | PUT    | `/profile/update-list`               | replace list preferences                    |
 | GET    | `/profile`                           | view profile                                |
 | GET    | `/profile/lists`                     | view all lists associated with user         |
-| GET    | `/profile/recommendations/:listName` | view recommendations (dummy data atm)       |
+| GET    | `/profile/recommendations/:listName` | view recommendations                        |
 | GET    | `/profile/recs/saved-recs`           | view user-saved recommendations             |
 | GET    | `/profile/preferences`               | view saved preferences for specific list    |
 | GET    | `/profile/lists`                     | Get all profiles/lists associated with user |
