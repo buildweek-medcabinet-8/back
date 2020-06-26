@@ -86,6 +86,7 @@ test account:
 | PUT    | `/profile/change-password` | change user password                        |
 | PUT    | `/profile/update-list`     | replace list preferences                    |
 | GET    | `/profile`                 | view profile                                |
+| GET    | `/profile/lists`           | view all lists associated with user         |
 | GET    | `/profile/recommendations` | view recommendations (dummy data atm)       |
 | GET    | `/profile/recs/saved-recs` | view user-saved recommendations             |
 | GET    | `/profile/preferences`     | view saved preferences for specific list    |
@@ -255,6 +256,66 @@ response data:
 ```json
 {
   "message": "welcome to your secret page, ${user} "
+}
+```
+
+#### GET /profile/lists
+
+(include auth token in headers)
+request data:
+
+```json
+{
+  "headers": { "authorization": "bearer really.long.token" }
+}
+```
+
+response data:
+
+```json
+{
+  "message": "better data shapes, happier users. Wouldn't you say, user2? :)",
+  "resObj": {
+    "Sleepy": {
+      "effects": [
+        "Creative",
+        "Energetic",
+        "Tingly",
+        "Euphoric",
+        "Relaxed",
+        "Uplifted"
+      ],
+      "flavors": ["Earthy", "Sweet", "Citrus", "Flowery", "Violet", "Sage"],
+      "description": ["don't"]
+    },
+    "Creative": {
+      "effects": [
+        "Tingly",
+        "Relaxed",
+        "Aroused",
+        "Happy",
+        "Uplifted",
+        "Hungry",
+        "Talkative",
+        "None"
+      ],
+      "flavors": [
+        "Citrus",
+        "Violet",
+        "Diesel",
+        "Spicy/Herbal",
+        "Sage",
+        "Woody",
+        "Apricot",
+        "Grapefruit"
+      ],
+      "description": ["stop"]
+    },
+    "Couch": {
+      "effects": ["Talkative", "None"],
+      "description": ["me"]
+    }
+  }
 }
 ```
 
