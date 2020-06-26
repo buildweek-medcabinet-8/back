@@ -152,7 +152,7 @@ router.post("/add-list", async (req, res) => {
     let newListId = await Users.addList(listName, id);
     let allFlavors = await Users.getEffectOrFlavorIds("flavor");
     let allEffects = await Users.getEffectOrFlavorIds("effect");
-    newListId = newListId[0];
+    newListId = newListId;
     console.log("LIST ID LIST ID LIST ID AAAAAAAAAAAA ", newListId, newListId);
     let payload = {
       flavors: [],
