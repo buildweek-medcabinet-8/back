@@ -108,7 +108,7 @@ function getPrefs(listID, table) {
 }
 
 function getListId(listName, id) {
-  return db("lists").where({ listName: listName, user_id: id });
+  return db("lists").where({ listName: listName, user_id: id }).select("id");
 }
 
 function addList(listName, user_id) {
