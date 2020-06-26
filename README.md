@@ -192,9 +192,8 @@ response data:
 
 ```
 
-#### PUT /profile/change-password This will delete your previous preferences
+#### PUT /profile/change-password
 
-//(Front-end, consider setting a limit of 5-10 effects and 10-20 flavors to increase model accuracy)
 (include auth token in headers)
 request data:
 
@@ -215,7 +214,6 @@ response data:
 
 #### PUT /profile/update-list
 
-//(Front-end, consider setting a limit of 5-10 effects and 10-20 flavors to increase model accuracy)
 (include auth token in headers)
 request data:
 
