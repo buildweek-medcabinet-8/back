@@ -139,9 +139,13 @@ router.post("/add-list", async (req, res) => {
     let newPreferences = req.body;
     // let listIDObj = await Users.getListId(listName, id);
     // let listId = listIDObj[0].id;
-
+    console.log(
+      "OKAY SO HERE IS YOUR LIST NAME AND ID THAT YOU'RE SEARCHING ",
+      listName,
+      id
+    );
     let exists = await Users.getListId(listName, id);
-    //  console.log(exists, exists, exists, exists, exists);
+    console.log("DOES IT EXIST OR NOT!??!?!?!?!?!??!!? ", exists);
     if (exists.length > 1) {
       res.status(400).json({
         message: "bruh. a list with that name already exists.",
@@ -152,7 +156,7 @@ router.post("/add-list", async (req, res) => {
     let newListId = await Users.addList(listName, id);
     let allFlavors = await Users.getEffectOrFlavorIds("flavor");
     let allEffects = await Users.getEffectOrFlavorIds("effect");
-    newListId = newListId;
+    newListId = newListId[0];
     console.log("LIST ID LIST ID LIST ID AAAAAAAAAAAA ", newListId, newListId);
     let payload = {
       flavors: [],
