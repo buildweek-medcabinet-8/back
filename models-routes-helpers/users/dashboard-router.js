@@ -13,7 +13,7 @@ async function getRecs(prefs) {
     formData.append("Flavors/Effects", prefs);
 
     const recResponse = await axios.post(
-      "https://medcabinet-v2.herokuapp.com/recommend",
+      "https://medcabinet-ds.herokuapp.com/recommend",
       formData,
       {
         // You need to use `getHeaders()` in Node.js because Axios doesn't
@@ -120,11 +120,30 @@ router.get("/lists", async (req, res) => {
   }
 });
 
-router.get("/recommendations", async (req, res) => {
+router.get("/recommendations/:listName", async (req, res) => {
   try {
+    let { listName } = req.params;
+    let id = req.decodedJwt.subject;
+    let prefs = [];
     let user = req.decodedJwt.username;
-    let prefs = req.body.prefs;
-    let recommendations = await getRecs(prefs);
+
+    let effects = await Users.getList(id, "effects", listName);
+    let flavors = await Users.getList(id, "flavors", listName);
+    let descriptions = await Users.getList(id, "list_descriptions", listName);
+
+    flavors.map((flavor) => {
+      prefs.push(flavor);
+    });
+    effects.map((effect) => {
+      prefs.push(effect);
+    });
+    if (descriptions.userDescription) {
+      await Users.updatePrefs(descriptions.userDescription, "description");
+      prefs.push(descriptions.userDescription);
+    }
+    let preffies = prefs.join(" ");
+
+    let recommendations = await getRecs(preffies);
 
     res.status(200).json({
       message: `herez yer weeeds `,
