@@ -8,7 +8,11 @@ router.use("/recs", recsRouter);
 
 function turnIDsIntoInfo(effects, flavors, descriptions) {
   let resObj = {};
-
+  console.log(effects);
+  console.log(flavors);
+  if (effects.length === 0 || flavors.length === 0) {
+    return null;
+  }
   effects.forEach((effect) => {
     if (!resObj[effect.listName]) {
       resObj[effect.listName] = {
@@ -73,6 +77,9 @@ async function makePrefstringFromList(id, listName) {
   let flavors = await Users.getList(id, "flavors", listName);
   let descriptions = await Users.getList(id, "list_descriptions", listName);
   let resObj = turnIDsIntoInfo(effects, flavors, descriptions);
+  if (resObj === null) {
+    return null;
+  }
   resObj = resObj[Object.keys(resObj)[0]];
 
   resObj.effects.map((effect) => {
@@ -129,6 +136,12 @@ router.get("/lists", async (req, res) => {
     let flavors = await Users.getLists(id, "flavors");
     let descriptions = await Users.getLists(id, "list_descriptions");
     let resObj = turnIDsIntoInfo(effects, flavors, descriptions);
+    if (resObj === null) {
+      res.status(404).json({
+        message: "THAT LIST DOES NOT EXIST! SILENCE!",
+        error: 404,
+      });
+    }
 
     res.status(200).json({
       message: `better data shapes, happier users. Wouldn't you say, ${user}? :)`,
@@ -147,15 +160,20 @@ router.get("/recommendations/:listName", async (req, res) => {
   try {
     let { listName } = req.params;
     let id = req.decodedJwt.subject;
-    let exists = await Users.getUserById(id);
-    if (exists.length < 1) {
+    // let exists = await Users.getUserById(id);
+    // if (exists.length < 1) {
+    //   res.status(404).json({
+    //     message: "bruh. that user doesn't exist. Sorry.",
+    //     error: "That's a bummer for ya",
+    //   });
+    // }
+    let prefsString = await makePrefstringFromList(id, listName);
+    if (prefsString === null) {
       res.status(404).json({
-        message: "bruh. that user doesn't exist. Sorry.",
-        error: "That's a bummer for ya",
+        message: "Silence, Mortal. That list doesn't exist",
+        error: 404,
       });
     }
-    let prefsString = await makePrefstringFromList(id, listName);
-
     let recommendations = await getRecs(prefsString);
 
     res.status(200).json({
