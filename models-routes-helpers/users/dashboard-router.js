@@ -148,7 +148,7 @@ router.get("/recommendations/:listName", async (req, res) => {
       prefs.push(descriptions.userDescription);
     }
     let preffies = prefs.join(" ");
-    console.log("prefs goin to DS are ", preffies);
+    console.log("yer preffies are ", preffies);
     let recommendations = await getRecs(preffies);
 
     res.status(200).json({
@@ -243,12 +243,13 @@ router.post("/add-list", async (req, res) => {
     }
 
     let preffies = prefs.join(" ");
-
+    console.log("yer preffies are ", preffies);
     let recommendations = await getRecs(preffies);
 
     res.status(200).json({
       message: `you just CREATED list: ${listName}, ${user} `,
       recommendations: recommendations,
+      preffies: preffies,
     });
   } catch (err) {
     res.status(500).json({
@@ -327,13 +328,21 @@ router.put("/update-list", async (req, res) => {
     await Users.updatePrefs(payload.effects, "effect");
 
     payload.flavors.map((flavor) => {
+      console.log("the flavo ", flavor);
+
       prefs.push(flavor);
     });
     payload.effects.map((effect) => {
+      console.log("the effecto ", effect);
+
       prefs.push(effect);
     });
     if (payload.descriptionObj.description) {
       await Users.updatePrefs(payload.descriptionObj, "description");
+      console.log(
+        "the descripto bescrippo ",
+        payload.descriptionObj.description
+      );
       prefs.push(payload.descriptionObj.description);
     }
 
@@ -344,6 +353,7 @@ router.put("/update-list", async (req, res) => {
     res.status(200).json({
       message: `you just UPDATED list: ${listName}, ${user} `,
       recommendations: recommendations,
+      preffies: prefs,
     });
   } catch (err) {
     res.status(500).json({
@@ -422,4 +432,37 @@ router.get("/delete-user", async (req, res) => {
   }
 });
 
+router.delete("/delete-list", async (req, res) => {
+  try {
+    let user = req.decodedJwt.username;
+    let listName = req.body.listName;
+    let id = req.decodedJwt.subject;
+    //include listName in req.body please ADD THIS TO THE README
+    let newPreferences = req.body;
+    // let listIDObj = await Users.getListId(listName, id);
+    // let listId = listIDObj[0].id;
+    console.log(
+      "OKAY SO HERE IS YOUR LIST NAME AND ID THAT YOU'RE SEARCHING ",
+      listName,
+      id
+    );
+    let exists = await Users.getListId(listName, id);
+    console.log("DOES IT EXIST OR NOT!??!?!?!?!?!??!!? ", exists);
+    if (exists.length < 1) {
+      res.status(400).json({
+        message: "bruh. that list doesn't exist",
+        error: "That's a bummer for ya",
+      });
+    }
+    await Users.deleteList(listName, id);
+
+    res.status(200).json({
+      message: `List: ${listName} successfully deleted`,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "bropken times", err: err, errmessage: err.message });
+  }
+});
 module.exports = router;
