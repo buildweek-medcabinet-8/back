@@ -8,8 +8,7 @@ router.use("/recs", recsRouter);
 
 function turnIDsIntoInfo(effects, flavors, descriptions) {
   let resObj = {};
-  console.log("start effects ", effects, " end effects");
-  console.log("start flavors ", flavors, " end flavors");
+
   effects.forEach((effect) => {
     if (!resObj[effect.listName]) {
       resObj[effect.listName] = {
@@ -84,7 +83,7 @@ async function makePrefstringFromList(id, listName) {
   });
   prefs.push(resObj.description[0]);
   let prefsString = prefs.join(" ");
-
+  console.log("DS Query Processed: ", prefsString);
   return prefsString;
 }
 
@@ -104,8 +103,6 @@ async function getRecs(prefs) {
       }
     );
     const recommendations = recResponse.data;
-
-    console.log(recommendations);
 
     return recommendations;
   } catch (err) {
@@ -127,13 +124,11 @@ router.get("/lists", async (req, res) => {
     let user = req.decodedJwt.username;
 
     let listName = req.body.listName;
-    console.log("is the id wrong?", id);
 
     let effects = await Users.getLists(id, "effects");
     let flavors = await Users.getLists(id, "flavors");
     let descriptions = await Users.getLists(id, "list_descriptions");
     let resObj = turnIDsIntoInfo(effects, flavors, descriptions);
-    console.log("the res obj COMING IN IS ", resObj);
 
     res.status(200).json({
       message: `better data shapes, happier users. Wouldn't you say, ${user}? :)`,
@@ -153,7 +148,6 @@ router.get("/recommendations/:listName", async (req, res) => {
     let { listName } = req.params;
     let id = req.decodedJwt.subject;
     let exists = await Users.getUserById(id);
-    console.log("DOES IT EXIST OR NOT!??!?!?!?!?!??!!? ", exists);
     if (exists.length < 1) {
       res.status(404).json({
         message: "bruh. that user doesn't exist. Sorry.",
@@ -185,7 +179,6 @@ router.post("/add-list", async (req, res) => {
     let newPreferences = req.body;
 
     let exists = await Users.getListId(listName, id);
-    console.log("DOES IT EXIST OR NOT!??!?!?!?!?!??!!? ", exists);
     if (exists.length > 0) {
       res.status(400).json({
         message: "bruh. a list with that name already exists.",
@@ -198,8 +191,6 @@ router.post("/add-list", async (req, res) => {
     let allFlavors = await Users.getEffectOrFlavorIds("flavor");
     let allEffects = await Users.getEffectOrFlavorIds("effect");
     let newListId = newList[0].id;
-    //newListId = newListId[0];
-    console.log("LIST ID LIST ID LIST ID AAAAAAAAAAAA ", newListId, newListId);
     let payload = {
       flavors: [],
       effects: [],
@@ -228,9 +219,6 @@ router.post("/add-list", async (req, res) => {
     someEffects.map((effect) => {
       payload.effects.push({ list_id: newListId, effect_id: effect.id });
     });
-
-    console.log(payload.flavors);
-    console.log(payload.effects);
 
     await Users.updatePrefs(payload.flavors, "flavor");
     await Users.updatePrefs(payload.effects, "effect");
@@ -263,7 +251,6 @@ router.put("/update-list", async (req, res) => {
     let newPreferences = req.body;
 
     let exists = await Users.getListId(listName, id);
-    console.log("DOES IT EXIST OR NOT!??!?!?!?!?!??!!? ", exists);
     if (exists.length < 1) {
       res.status(400).json({
         message: "bruh. a list with that name doesn't exist",
@@ -276,8 +263,6 @@ router.put("/update-list", async (req, res) => {
     let allFlavors = await Users.getEffectOrFlavorIds("flavor");
     let allEffects = await Users.getEffectOrFlavorIds("effect");
     let newListId = newList[0].id;
-    //newListId = newListId[0];
-    console.log("LIST ID LIST ID LIST ID AAAAAAAAAAAA ", newListId, newListId);
     let payload = {
       flavors: [],
       effects: [],
@@ -306,9 +291,6 @@ router.put("/update-list", async (req, res) => {
     someEffects.map((effect) => {
       payload.effects.push({ list_id: newListId, effect_id: effect.id });
     });
-
-    console.log(payload.flavors);
-    console.log(payload.effects);
 
     await Users.updatePrefs(payload.flavors, "flavor");
     await Users.updatePrefs(payload.effects, "effect");
@@ -406,17 +388,9 @@ router.delete("/delete-list", async (req, res) => {
     let user = req.decodedJwt.username;
     let listName = req.body.listName;
     let id = req.decodedJwt.subject;
-    //include listName in req.body please ADD THIS TO THE README
     let newPreferences = req.body;
-    // let listIDObj = await Users.getListId(listName, id);
-    // let listId = listIDObj[0].id;
-    console.log(
-      "OKAY SO HERE IS YOUR LIST NAME AND ID THAT YOU'RE SEARCHING ",
-      listName,
-      id
-    );
+
     let exists = await Users.getListId(listName, id);
-    console.log("DOES IT EXIST OR NOT!??!?!?!?!?!??!!? ", exists);
     if (exists.length < 1) {
       res.status(400).json({
         message: "bruh. that list doesn't exist",
