@@ -4,17 +4,9 @@ const Users = require("./users-model");
 router.get("/", async (req, res) => {
   let user = req.decodedJwt.username;
 
-  let returnedObj = {
-    yourName: `${user}, do a thing!`,
-    Strain: "weed",
-    type: "teh green weed",
-    rating: "like 52 stars dude",
-    effect: ["Creative", "Energetic", "Tingly", "Focused"],
-    flavor: ["Minty", "Chemical", "Cheese"],
-    description: "I mean this weed is basically the weediest and the cheesiest",
-  };
-
-  res.status(200).json({ message: "you've made it to recs. Maginificent." });
+  res
+    .status(200)
+    .json({ message: `you've made it to the recs, ${user}, magnificent.` });
 });
 
 router.get("/saved-recs", (req, res) => {
