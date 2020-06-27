@@ -566,7 +566,7 @@ response data:
 }
 ```
 
-#### DELETE /profile/saved-recs/delete-recommendation
+#### DELETE /profile/recs/del-rec
 
 (include auth token in headers)
 request data:
