@@ -93,7 +93,7 @@ test account:
 | GET    | `/profile/lists`                     | Get all profiles/lists associated with user |
 | GET    | `/traits/effects`                    | get all effects in database                 |
 | GET    | `/traits/flavors`                    | get all flavors in database                 |
-| DELETE | `/profile/del-user`                  | delete currently logged in user (via jwt)   |
+| DELETE | `/profile/delete-user`               | delete currently logged in user (via jwt)   |
 | DELETE | `/profile/recs/del-rec`              | delete single recommendation from server    |
 | DELETE | `/profile/delete-list`               | delete list from server                     |
 
