@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const Users = require("./users-model");
 const Account = require("./account-model");
-//const listsRouter = require("../lists/lists-router");
+const recsRouter = require("./recommendations-router");
 const axios = require("axios");
 const FormData = require("form-data");
-//router.use("/list", listsRouter);
+router.use("/recs", recsRouter);
 
 function turnIDsIntoInfo(effects, flavors, descriptions) {
   let resObj = {};
