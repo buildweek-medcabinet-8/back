@@ -1,10 +1,10 @@
 const knex = require("knex");
-const knexConfig = require("../knexfile");
-//const env = "testing";
-let env = process.env.NODE_ENV || "development";
-if (env === "test") {
-  env = "testing";
-}
-const configOptions = knexConfig[env];
+var path = require("path");
+var dotEnvPath = path.resolve("./.env");
+require("dotenv").config({ path: dotEnvPath });
 
-module.exports = knex(configOptions);
+const knexfile = require("../knexfile.js");
+console.log(process.env.DB_ENV);
+const environment = process.env.DB_ENV || "development"; //SET TO process.env.DB_ENV to run test suites
+
+module.exports = knex(knexfile[environment]);
