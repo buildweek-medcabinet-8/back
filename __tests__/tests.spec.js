@@ -35,7 +35,7 @@ describe("users-router.js", () => {
       expect(res.status).toBe(400);
     });
 
-    it('should have a message of "Good job registering, ${username}" upon registering', async () => {
+    it('should have a message of "You successfully registered! (response being updated)"', async () => {
       const res = await request(server).post("/auth/register").send({
         username: "abcde",
         password: "qwerty",
