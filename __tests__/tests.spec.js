@@ -28,11 +28,11 @@ describe("users-router.js", () => {
       });
       expect(res.status).toBe(201);
     });
-    it("should return 400", async () => {
+    it("should return 500", async () => {
       const res = await request(server)
         .post("/auth/register")
         .send({ username: true, password: null, email: null });
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(500);
     });
 
     it('should have a message of "You successfully registered! (response being updated)"', async () => {
@@ -62,39 +62,5 @@ describe("users-router.js", () => {
         .send({ username: "abcd", password: "qwerty" });
       expect(res.status).toBe(200);
     });
-
-    // it('login message should be - "Welcome to our API, testbot"', async () => {
-    //   const register = await request(server).post("/api/auth/register").send({
-    //     username: "testbot",
-    //     password: "qwerty",
-    //     email: "test@qwertry.com",
-    //   });
-    //   const res = await request(server)
-    //     .post("/api/auth/login")
-    //     .send({ username: "testbot", password: "qwerty" });
-    //   let response = JSON.parse(res.text);
-    //   expect(response.message).toBe("Welcome to our API, testbot");
-    // });
-
-    // it("should return 401", async () => {
-    //   const register = await request(server)
-    //     .post("/api/auth/register")
-    //     .send({ username: "abcd", password: "qwerty" });
-    //   const res = await request(server)
-    //     .post("/api/auth/login")
-    //     .send({ username: "abcd", password: "12345" });
-    //   expect(res.status).toBe(401);
-    // });
-
-    // it("login error message should be - Invalid credentials", async () => {
-    //   const register = await request(server)
-    //     .post("/api/auth/register")
-    //     .send({ username: "testbot", password: "qwerty" });
-    //   const res = await request(server)
-    //     .post("/api/auth/login")
-    //     .send({ username: "testbot", password: "12345" });
-    //   let response = JSON.parse(res.text);
-    //   expect(response.message).toBe("Invalid credentials");
-    // });
   });
 });

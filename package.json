@@ -4,7 +4,7 @@
   "description": "this is the repo for the backend team",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env DB_ENV=testing jest --watch",
+    "test": "cross-env NODE_ENV=testing jest --watch",
     "start": "node index.js",
     "migrate": "knex migrate:latest",
     "unmigrate": "knex migrate:rollback",
